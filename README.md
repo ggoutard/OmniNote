@@ -30,6 +30,6 @@ Le tutoriel complet s'ouvre à la première visite (ou avec `/visite`).
 
 ## Licences
 
-Le code de TextEdit est sous licence MIT (`LICENSE`). Les composants tiers gardent leur licence : le tableau complet est dans [`THIRD_PARTY.md`](THIRD_PARTY.md), les textes dans [`licenses/`](licenses/), et les sources des composants GPL et LGPL dans [`licenses/SOURCES.txt`](licenses/SOURCES.txt).
+Les composants tiers gardent leur licence : le tableau complet est dans [`THIRD_PARTY.md`](THIRD_PARTY.md), les textes dans [`licenses/`](licenses/), et les sources des composants GPL et LGPL dans [`licenses/SOURCES.txt`](licenses/SOURCES.txt).
 
 Auteur : ggoutard — contact : contact.ggoutard@gmail.com
