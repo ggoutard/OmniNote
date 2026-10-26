@@ -1,4 +1,4 @@
-# TextEdit
+# OmniNote
 
 Un éditeur de texte Markdown où **le français s'exécute** et où **chaque bloc de code tourne dans une vraie machine Linux x86**, émulée dans le navigateur ([JarWeBox](https://github.com/ggoutard/JarWeBox), v86 en WebAssembly). Aucun serveur d'exécution, aucune installation : ce dépôt est un site statique, publié tel quel par GitHub Pages.
 
@@ -11,7 +11,7 @@ Un éditeur de texte Markdown où **le français s'exécute** et où **chaque bl
 - **Partager une page par un lien** (`/lien`) : tout le document tient dans l'adresse, après le `#`, qui n'est jamais envoyé au serveur. On choisit le mot d'accueil tapé à l'ouverture (« Bonjour Lucas »). Le destinataire peut modifier la page sans toucher à ses propres documents.
 - **Exporter** : `/pdf` (le livre de toutes les pages), `/copier`, `/enregistrer` (un `.ted` : tout le projet), `/télécharger` (`.ipynb`), `/markdown`.
 - **Voir le projet d'un coup d'œil** : `/diagramme` montre les pages, leurs sections, leurs blocs, les liens et les dépendances entre blocs ; un clic décompose un bloc.
-- **Travailler hors ligne** : TextEdit s'installe comme une application (bureau, Android, iPhone) ; « Tout télécharger », dans l'accueil, garde aussi la machine et ses compilateurs dans le navigateur — train, avion.
+- **Travailler hors ligne** : OmniNote s'installe comme une application (bureau, Android, iPhone) ; « Tout télécharger », dans l'accueil, garde aussi la machine et ses compilateurs dans le navigateur — train, avion.
 - **Plus de puissance** : la même machine, sans émulation, dans un conteneur Docker (`docker run --rm -p 127.0.0.1:8780:8780 ghcr.io/ggoutard/textedit`, puis http://localhost:8780/).
 
 Le tutoriel complet s'ouvre à la première visite (ou avec `/visite`).

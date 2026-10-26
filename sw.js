@@ -1,4 +1,4 @@
-// Le Service Worker de TextEdit : l'application s'installe et fonctionne hors ligne (train, avion).
+// Le Service Worker d'OmniNote : l'application s'installe et fonctionne hors ligne (train, avion).
 //
 // - L'application (HTML, JS, CSS, bibliothèques, exemples, noyau) : un cache par version du site, rempli à
 //   l'installation ; la version suivante le remplace quand plus aucun onglet n'utilise l'ancienne.
@@ -7,7 +7,7 @@
 //   Linux lit s'y rangent au fil de l'usage ; « /hors ligne » les télécharge tous, compilateurs compris.
 // - Les polices (Google Fonts) : gardées après la première visite.
 // Rien ne part ailleurs : le Service Worker ne fait que garder une copie des fichiers du site.
-const VERSION = "7b48fa641a7c";
+const VERSION = "4c79e5360b72";
 const APP = `textedit-app-${VERSION}`, VM = "textedit-vm", EXT = "textedit-ext";
 const scope = new URL(self.registration.scope);
 // En local (localhost) : pas de copie hors ligne, pour voir chaque modification. Un Service Worker installé avant se

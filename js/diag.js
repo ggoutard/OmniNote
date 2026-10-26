@@ -1,6 +1,6 @@
-// diag.js — le diagnostic de TextEdit : ce que fait la machine, mesuré, pour comprendre ce qui est lent ou ce qui
+// diag.js — le diagnostic d'OmniNote : ce que fait la machine, mesuré, pour comprendre ce qui est lent ou ce qui
 // casse sans deviner. Rien ne sort du navigateur : /diagnostic l'affiche, « Copier le rapport » le met dans le
-// presse-papiers (pour le coller où l'on veut), et window.textedit le donne aux tests et à la console.
+// presse-papiers (pour le coller où l'on veut), et window.omninote le donne aux tests et à la console.
 //
 // Ce qui est noté : les étapes du démarrage (machine, noyau, Java), chaque exécution (attente dans la file, envoi
 // du code, compilation, exécution, interruption), les échanges sur le port série (nombre, durée, volume), les
@@ -23,7 +23,7 @@ export const diag = {
         const e = { t: Math.round(now()), kind, ...data };
         this.events.push(e);
         if (this.events.length > MAX_EVENTS) this.events.splice(0, this.events.length - MAX_EVENTS);
-        if (verbose) console.debug(`[textedit ${(e.t / 1000).toFixed(2)} s] ${kind}`, data);
+        if (verbose) console.debug(`[omninote ${(e.t / 1000).toFixed(2)} s] ${kind}`, data);
         return e;
     },
 
@@ -85,7 +85,7 @@ export const diag = {
     /** Le rapport en texte, à coller dans un message. */
     report(extra = {}) {
         const ms = (v) => (v == null ? "—" : v >= 1000 ? `${(v / 1000).toFixed(1)} s` : `${v} ms`);
-        const lines = [`TextEdit — diagnostic, ${new Date().toLocaleString("fr-FR")}`, ""];
+        const lines = [`OmniNote — diagnostic, ${new Date().toLocaleString("fr-FR")}`, ""];
         for (const [k, v] of Object.entries(extra)) lines.push(`${k} : ${v}`);
         lines.push("", "Démarrage de la machine :");
         const b0 = this.boot.start ?? 0;

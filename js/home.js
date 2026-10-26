@@ -23,7 +23,7 @@ export function setupHome(app) {
         $("#hm-install-ios").hidden = !(isIOS && !offline.installed);
         if (offline.installed) { badge.textContent = "application installée"; badge.className = "hm-badge ok"; }
         if (kernel.native) {
-            text.textContent = "Rien à télécharger : TextEdit et sa machine tournent déjà sur votre ordinateur, dans le conteneur Docker.";
+            text.textContent = "Rien à télécharger : OmniNote et sa machine tournent déjà sur votre ordinateur, dans le conteneur Docker.";
             badge.textContent = "sur cet ordinateur"; badge.className = "hm-badge ok";
             dl.hidden = true;
             return;
@@ -36,7 +36,7 @@ export function setupHome(app) {
         const st = await offline.status();
         const full = st.have >= st.total;
         if (!offline.installed) { badge.textContent = full ? "prêt hors ligne" : `${Math.floor((st.have / st.total) * 100)} %`; badge.className = `hm-badge${full ? " ok" : ""}`; }
-        text.textContent = full ? `Tout est gardé dans ce navigateur (${fmtBytes(st.total)}) : TextEdit, la machine et ses compilateurs fonctionnent sans réseau.`
+        text.textContent = full ? `Tout est gardé dans ce navigateur (${fmtBytes(st.total)}) : OmniNote, la machine et ses compilateurs fonctionnent sans réseau.`
             : `${fmtBytes(st.have)} gardés sur ${fmtBytes(st.total)}. Téléchargez le reste pour travailler sans réseau, compilateurs compris.`;
         dl.textContent = full ? "Tout est téléchargé" : `Tout télécharger (${fmtBytes(st.total - st.have)})`;
         dl.disabled = full;
@@ -85,7 +85,7 @@ export function setupHome(app) {
         $("#hm-r-facts").innerHTML = facts.map((f) => `<li>${f}</li>`).join("");
         const warn = $("#hm-r-warn"), risky = sum.htmlCode + sum.outCode;
         warn.hidden = !risky && !sum.autoRun;
-        warn.innerHTML = (risky ? `<b>Attention : ce lien contient ${sum.htmlCode ? `${sum.htmlCode} bloc${sum.htmlCode > 1 ? "s" : ""} HTML` : ""}${sum.htmlCode && sum.outCode ? " et " : ""}${sum.outCode ? `${sum.outCode} résultat${sum.outCode > 1 ? "s" : ""} HTML` : ""} avec du JavaScript.</b> Ne l'exécutez jamais sans être sûr de ce qu'il fait : un script peut imiter un vrai site, afficher un faux formulaire de connexion ou vous pousser à saisir des informations personnelles. TextEdit l'affiche sans l'exécuter ; même si vous l'exécutez, il n'aura aucun accès au réseau.` : "")
+        warn.innerHTML = (risky ? `<b>Attention : ce lien contient ${sum.htmlCode ? `${sum.htmlCode} bloc${sum.htmlCode > 1 ? "s" : ""} HTML` : ""}${sum.htmlCode && sum.outCode ? " et " : ""}${sum.outCode ? `${sum.outCode} résultat${sum.outCode > 1 ? "s" : ""} HTML` : ""} avec du JavaScript.</b> Ne l'exécutez jamais sans être sûr de ce qu'il fait : un script peut imiter un vrai site, afficher un faux formulaire de connexion ou vous pousser à saisir des informations personnelles. OmniNote l'affiche sans l'exécuter ; même si vous l'exécutez, il n'aura aucun accès au réseau.` : "")
             + (sum.autoRun ? `${risky ? "<br>" : ""}<b>Ce diaporama demande à exécuter ${sum.autoRun} bloc${sum.autoRun > 1 ? "s" : ""} de lui-même.</b> Il ne le fera que si vous l'y autorisez, dans le bandeau du document.` : "");
     }
 
@@ -128,7 +128,7 @@ export function setupHome(app) {
         }
         const nb = url.searchParams.get("nb");
         if (nb) { location.assign(`?nb=${encodeURIComponent(nb)}`); return; }
-        toast("Ce n'est pas un lien TextEdit (il commence par …#d= ou …?nb=)");
+        toast("Ce n'est pas un lien OmniNote (il commence par …#d= ou …?nb=)");
     });
     $("#hm-off-dl").addEventListener("click", async () => {
         const bar = $("#hm-off-bar"), dl = $("#hm-off-dl");
@@ -136,18 +136,18 @@ export function setupHome(app) {
         dl.disabled = true;
         try {
             await offline.downloadAll((done, total) => { bar.style.setProperty("--p", `${(done / total) * 100}%`); dl.textContent = `${fmtBytes(done)} / ${fmtBytes(total)}…`; });
-            toast("TextEdit est disponible hors ligne, machine et compilateurs compris");
+            toast("OmniNote est disponible hors ligne, machine et compilateurs compris");
         } catch (err) { toast(`Téléchargement interrompu : ${err.message}`); dl.disabled = false; }
         homeOffline();
     });
-    $("#hm-install").addEventListener("click", async () => { if (await offline.install()) toast("TextEdit est installé"); homeOffline(); });
-    addEventListener("textedit-installable", () => { if ($("#home").open) homeOffline(); });
+    $("#hm-install").addEventListener("click", async () => { if (await offline.install()) toast("OmniNote est installé"); homeOffline(); });
+    addEventListener("omninote-installable", () => { if ($("#home").open) homeOffline(); });
     $("#hm-nat-copy").addEventListener("click", async () => {
         try { await navigator.clipboard.writeText($("#hm-nat-cmd").textContent); toast("Commande copiée"); } catch { toast("Copie refusée par le navigateur"); }
     });
     // Un .ted ouvert depuis le système (application installée : double-clic, « Ouvrir avec »)
     if ("launchQueue" in window) window.launchQueue.setConsumer(async (params) => { for (const h of params.files || []) openFile(await h.getFile()); });
-    offline.register(() => toast("Une nouvelle version de TextEdit est prête : elle s'ouvrira au prochain démarrage", { ms: 6000 })).then(() => { if ($("#home").open) homeOffline(); });
+    offline.register(() => toast("Une nouvelle version d'OmniNote est prête : elle s'ouvrira au prochain démarrage", { ms: 6000 })).then(() => { if ($("#home").open) homeOffline(); });
 
     return { open: openHome };
 }

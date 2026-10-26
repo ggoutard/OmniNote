@@ -15,8 +15,8 @@ export function langueArticle() {
             md(`
 ---
 mode: scientifique
-auteurs: Atelier TextEdit
-affiliation: TextEdit, dans votre navigateur
+auteurs: Atelier OmniNote
+affiliation: OmniNote, dans votre navigateur
 date: 18 octobre 2026
 résumé: Nous montrons qu'un fragment du français, lu sans ambiguïté, suffit à programmer, et surtout qu'un document écrit ainsi **sait ce que sont ses données** — sans rien exécuter, sans modèle de langage, sans serveur. De ses seules phrases, de ses tableaux et de leurs unités, il déduit que « les opérations » sont une liste de sommes, qu'un loyer et une surface ne s'additionnent pas, à quoi renvoie un pronom, quelle faute de frappe a du sens. Ce savoir, un treillis de sortes inféré dans les deux sens, devient le juge de tout le reste : il répare, tranche, apprend et vérifie. Cet article en est la preuve par l'exemple : chacune de ses phrases soulignées est un programme, exécuté pendant votre lecture. La suite de Collatz partant de 27 y atteint 1 en {{compte}} étapes : ce nombre n'a pas été écrit par l'auteur, il est calculé par une phrase de la section @sec:langue.
 mots-clés: langue naturelle contrôlée, inférence de types, interprétation abstraite, typage graduel, anti-unification, vérification de preuves
@@ -247,7 +247,7 @@ La langue reste un fragment : un corpus écrit sans consigne est compris à 95 %
 
 Un texte peut être à la fois un document, un programme, une requête et une démonstration. Il suffit que chaque phrase ait un seul sens — et que le document sache de quoi il parle. Ce savoir n'a pas besoin d'être appris d'un corpus : il est déjà dans le texte, dans ses tableaux, ses unités, ses verbes. Le rendre explicite suffit à ce que la machine répare, tranche, apprend et vérifie comme le ferait un lecteur attentif — en disant toujours pourquoi.
 
-<!-- lexique — ce que ce document a appris (TextEdit) :
+<!-- lexique — ce que ce document a appris (OmniNote) :
 lecture : affiche ({nombre:€} plus {nombre:€}) fois {n}
 tournure : balance moi {X} direct → Affiche {X}.
 -->

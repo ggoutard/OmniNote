@@ -163,7 +163,7 @@ export class Terminal {
         });
         this.input.addEventListener("keydown", (e) => this.key(e));
         this.prompt();
-        this.print([["TextEdit — terminal de l'espace de travail. ", "dim"], ["help", "cmd"], [" pour les commandes ; les pages sont des fichiers, rangés dans des dossiers.", "dim"]]);
+        this.print([["OmniNote — terminal de l'espace de travail. ", "dim"], ["help", "cmd"], [" pour les commandes ; les pages sont des fichiers, rangés dans des dossiers.", "dim"]]);
     }
 
     /** L'un arrive d'un côté pendant que l'autre s'efface (comme un changement de page) */
@@ -197,7 +197,7 @@ export class Terminal {
 
     prompt() {
         const where = "/" + this.cwd;
-        this.ps.replaceChildren(this.seg("textedit", "user"), this.seg(":", "dim"), this.seg(where, "dir"), this.seg("$ ", "dim"));
+        this.ps.replaceChildren(this.seg("omninote", "user"), this.seg(":", "dim"), this.seg(where, "dir"), this.seg("$ ", "dim"));
         this.title.textContent = `Terminal — ${where}`;
     }
     seg(text, cls, link) {
@@ -263,7 +263,7 @@ export class Terminal {
             const n = bang[1] === "!" ? this.history.length : +bang[1] < 0 ? this.history.length + 1 + +bang[1] : +bang[1];
             const got = this.history[n - 1];
             this.echoLine(v);
-            if (!got) { this.error(`textedit: ${v.trim()} : événement introuvable`); this.hpos = this.history.length; return; }
+            if (!got) { this.error(`omninote: ${v.trim()} : événement introuvable`); this.hpos = this.history.length; return; }
             v = got;
             this.print(v, "dim");
         } else this.echoLine(v);
@@ -274,7 +274,7 @@ export class Terminal {
         }
         this.hpos = this.history.length;
         this.draft = "";
-        try { this.run(v); } catch (err) { this.error(`textedit: ${err.message}`); }
+        try { this.run(v); } catch (err) { this.error(`omninote: ${err.message}`); }
         this.prompt();
         this.body.scrollTop = this.body.scrollHeight;
     }
@@ -365,15 +365,15 @@ export class Terminal {
             args = args.filter((_, k) => k !== r && k !== r + 1);
         }
         const fn = this[`c_${name}`];
-        if (!fn) { this.error(`textedit: ${name} : commande introuvable (help pour la liste)`); return; }
+        if (!fn) { this.error(`omninote: ${name} : commande introuvable (help pour la liste)`); return; }
         if (!redirect) { fn.call(this, args); return; }
         // la sortie, recueillie au lieu d'être affichée
         const lines = [], print = this.print;
         this.print = (parts) => lines.push(typeof parts === "string" ? parts : parts.map(([t]) => t).join(""));
         try { fn.call(this, args); } finally { this.print = print; }
         const p = redirect.path;
-        if (this.isDir(p)) { this.error(`textedit: ${p} : est un dossier`); return; }
-        if (!this.isFile(p) && !this.isDir(parent(p))) { this.error(`textedit: ${p} : ${NOENT}`); return; }
+        if (this.isDir(p)) { this.error(`omninote: ${p} : est un dossier`); return; }
+        if (!this.isFile(p) && !this.isDir(parent(p))) { this.error(`omninote: ${p} : ${NOENT}`); return; }
         const text = lines.join("\n") + (lines.length ? "\n" : "");
         if (this.isFile(p)) this.env.write(p, text, redirect.append);
         else this.env.create(p, text);

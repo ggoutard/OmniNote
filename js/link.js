@@ -57,7 +57,7 @@ export async function makeLink(nb, opts = {}) {
 /** Le contraire de pack : { nb, ro, hello }. */
 export async function unpack(bytes) {
     const data = JSON.parse(new TextDecoder().decode(await pipe(bytes, new DecompressionStream("deflate-raw"))));
-    if (!data || data.v !== VERSION || !Array.isArray(data.cells)) throw new Error("ce lien vient d'une autre version de TextEdit");
+    if (!data || data.v !== VERSION || !Array.isArray(data.cells)) throw new Error("ce lien vient d'une autre version d'OmniNote");
     const read = (cells) => cells.map(([lang, source, outputs]) => (lang
         ? { type: "code", lang: String(lang).split(" ")[0], source: String(source), outputs: outputs || [], meta: String(lang).includes(" ") ? { fence: String(lang).slice(String(lang).indexOf(" ") + 1) } : {} }
         : { type: "markdown", lang: "markdown", source: String(source), outputs: [] }));

@@ -1,6 +1,6 @@
 # Composants tiers
 
-Le code de TextEdit (éditeur, noyaux, Grama Lectica) est sous licence MIT (voir `LICENSE`), **sauf**
+Le code d'OmniNote (éditeur, noyaux, Grama Lectica) est sous licence MIT (voir `LICENSE`), **sauf**
 les éléments ci-dessous, qui gardent leur propre licence. Ils sont distribués à côté de notre code,
 sans modification, et ne changent pas sa licence. Les textes complets sont dans `licenses/`.
 
@@ -34,7 +34,7 @@ sans modification, et ne changent pas sa licence. Les textes complets sont dans 
 ## Sources des composants GPL et LGPL
 
 Ils sont redistribués sans modification. Les sources correspondantes, aux versions exactes des
-binaires, sont indiquées dans `licenses/SOURCES.txt` (composants ajoutés par TextEdit) et dans
+binaires, sont indiquées dans `licenses/SOURCES.txt` (composants ajoutés par OmniNote) et dans
 `licenses/jarwebox/SOURCES.txt` (image de JarWeBox), avec une offre écrite valable trois ans.
 
 ## Marques
@@ -42,7 +42,7 @@ binaires, sont indiquées dans `licenses/SOURCES.txt` (composants ajoutés par T
 Java et OpenJDK sont des marques d'Oracle et/ou de ses filiales ; Kotlin, de JetBrains ; Rust, de la
 Rust Foundation ; Go, de Google ; PHP, du PHP Group ; Python, de la Python Software Foundation ;
 Linux, de Linus Torvalds ; Debian, de Software in the Public Interest ; GNU, de la Free Software
-Foundation. TextEdit est un projet indépendant : il n'est ni affilié à ces titulaires, ni approuvé
+Foundation. OmniNote est un projet indépendant : il n'est ni affilié à ces titulaires, ni approuvé
 ou soutenu par eux. Ces noms ne servent qu'à désigner les logiciels utilisés.
 
 Auteur : ggoutard — contact : contact.ggoutard@gmail.com

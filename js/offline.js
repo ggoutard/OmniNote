@@ -4,7 +4,7 @@
 // développement, les fichiers qu'on modifie ne restent pas figés dans un cache.
 
 let installEvent = null;
-addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvent = e; dispatchEvent(new Event("textedit-installable")); });
+addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvent = e; dispatchEvent(new Event("omninote-installable")); });
 
 export const offline = {
     supported: "serviceWorker" in navigator && "caches" in window,

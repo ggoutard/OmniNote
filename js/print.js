@@ -211,7 +211,7 @@ export function setupPrint(app) {
         root.className = "book";
         const when = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
         const title = pageName(0);
-        root.insertAdjacentHTML("beforeend", `<section class="md book-cover"><div class="book-kicker">TextEdit</div><h1>${esc(title)}</h1><p>${S.pages.length} pages${dirs.length ? ` · ${dirs.length} dossier${dirs.length > 1 ? "s" : ""}` : ""} · ${esc(when)}</p></section>`);
+        root.insertAdjacentHTML("beforeend", `<section class="md book-cover"><div class="book-kicker">OmniNote</div><h1>${esc(title)}</h1><p>${S.pages.length} pages${dirs.length ? ` · ${dirs.length} dossier${dirs.length > 1 ? "s" : ""}` : ""} · ${esc(when)}</p></section>`);
         const toc = document.createElement("section");
         toc.className = "md book-toc";
         toc.id = "sommaire";

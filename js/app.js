@@ -43,7 +43,7 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 const fold = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
 // Sur iPad (et iPhone avec clavier), Option sert aux caractères spéciaux et le système en garde les raccourcis :
-// la touche Cmd (⌘) y remplace Alt dans ceux de TextEdit
+// la touche Cmd (⌘) y remplace Alt dans ceux d'OmniNote
 const cmdForAlt = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const ALT = cmdForAlt ? "⌘" : "Alt";
 const MOD = isMac ? "⌘" : "Ctrl";
@@ -106,7 +106,7 @@ const preludeSent = new Map();
 const preludeMissing = (lang, fx) => { const have = preludeSent.get(lang); return (fx.parts || [fx.prelude]).filter((x) => !have?.has(x)); };
 const preludeDone = (lang, parts) => { const have = preludeSent.get(lang) || new Set(); parts.forEach((x) => have.add(x)); preludeSent.set(lang, have); };
 // Pour la console et les tests : l'état de la page, le noyau, et ce qu'il a mesuré (diag.js) — rien n'en sort
-window.textedit = { kernel, diag, get state() { return S; }, get editor() { return cm; }, report: () => diagReport(), printView: (...a) => printer.printView(...a) };
+window.omninote = { kernel, diag, get state() { return S; }, get editor() { return cm; }, report: () => diagReport(), printView: (...a) => printer.printView(...a) };
 
 // Les blocs ```java, ```sql… se colorent avec le mode de leur langage
 defineModes(CodeMirror);
@@ -1302,9 +1302,9 @@ function updateTitle() {
     renderPages();
     const line = (S.page ? cellsText(S.pages[0].cells || []) : cm.getValue()).split("\n").find((l) => /^#\s/.test(l));
     const title = line ? line.replace(/^#\s+/, "").replace(/[*_`]/g, "").trim() : "Sans titre";
-    if (title !== S.title || !document.title.endsWith("TextEdit")) {
+    if (title !== S.title || !document.title.endsWith("OmniNote")) {
         S.title = title;
-        document.title = `${title} · TextEdit`;
+        document.title = `${title} · OmniNote`;
     }
 }
 
@@ -1915,7 +1915,7 @@ const COMMANDS = [
     { key: "diagramme", alt: "carte", label: "Diagramme du projet", hint: "sections, liens entre pages, dépendances entre blocs", run: () => showDiagram() },
     { key: "diagnostic", alt: "performance", label: "Diagnostic", hint: "ce que fait la machine, ce qui est lent : un rapport à copier", run: () => showDiagnostic() },
     { key: "accueil", alt: "menu", label: "Accueil", hint: "ouvrir un lien ou un .ted, hors ligne, Docker", run: () => openHome() },
-    { key: "hors ligne", alt: "installer", label: "Hors ligne et installation", hint: "garder TextEdit et sa machine dans ce navigateur", run: () => openHome("offline") },
+    { key: "hors ligne", alt: "installer", label: "Hors ligne et installation", hint: "garder OmniNote et sa machine dans ce navigateur", run: () => openHome("offline") },
     { key: "telecharger", label: "Télécharger en .ipynb", run: () => saveIpynb() },
     { key: "markdown", alt: "telecharger md", label: "Télécharger en .md", run: () => saveMarkdown() },
     { key: "pdf", alt: "imprimer", label: "Exporter en PDF", hint: () => (S.pages.length > 1 ? "le livre : toutes les pages, sommaire" : S.deckMode ? "une diapositive par page" : "texte, code et résultats"), run: () => exportPdf() },
@@ -1937,14 +1937,14 @@ const COMMANDS = [
     { key: "modele", alt: "concepts ontologie sortes", label: "Ce que le document sait de ses données", hint: "sortes, champs, actions, d'où elles viennent", run: () => showModel() },
     { grama: true, key: "lexique", label: "Ce que ce document a appris", hint: "lectures et tournures, à la fin du texte", run: () => { const i = cm.getValue().search(/<!--\s*lexique\b/i); if (i < 0) toast("Ce document n'a encore rien appris (une question sous une phrase, ou /apprendre)"); else { const p = cm.posFromIndex(i); cm.setCursor(p); cm.scrollIntoView(p, 120); } } },
     { key: "envoyer", label: "Envoyer un fichier dans la machine", run: () => $("#upload-file").click() },
-    { key: "visite", label: "Visite de TextEdit", run: () => replaceDocument(() => loadNotebook(welcome())) },
+    { key: "visite", label: "Visite d'OmniNote", run: () => replaceDocument(() => loadNotebook(welcome())) },
     { key: "exemple", label: "Exemple : analyse de données", run: () => replaceDocument(() => loadNotebook(dataTour())) },
     { key: "exemple presentation", alt: "exemple diaporama", label: "Exemple : présentation", hint: "mode présentation", run: () => replaceDocument(() => loadNotebook(presentation())) },
     { key: "exemple article", alt: "article", label: "Exemple : article scientifique", hint: "mode scientifique", run: () => replaceDocument(() => loadNotebook(article())) },
     { key: "exemple iris", alt: "projet iris", label: "Exemple : projet Iris", hint: "deep learning : SQL, réseau de neurones, validation, article, cours", run: () => replaceDocument(() => loadNotebook(irisProject())) },
     { grama: true, key: "exemple langue", alt: "programmer en francais", label: "Exemple : Programmer en français", hint: "langue naturelle, article vivant", run: () => replaceDocument(() => loadNotebook(langueArticle())) },
     { key: "aide", alt: "raccourcis", label: "Raccourcis", run: () => showShortcuts() },
-    { key: "a propos", alt: "about", label: "À propos de TextEdit", hint: "confidentialité, réseau, liens", run: () => $("#about").showModal() },
+    { key: "a propos", alt: "about", label: "À propos d'OmniNote", hint: "confidentialité, réseau, liens", run: () => $("#about").showModal() },
 ].filter((c) => GRAMA || !c.grama).map((x) => ({ ...x, command: true }));
 
 const FORMATS = [
@@ -3192,7 +3192,7 @@ function trustBanner(again = false) {
         bar.className = "trust";
         bar.setAttribute("role", "status");
         const deckDoc = S.deckMode || isDeck(frontMatter(cm.getValue().split("\n", 61)));
-        bar.innerHTML = '<span class="trust-text"><b>Document reçu par lien.</b> Rien ne s\'y exécute tout seul : le HTML s\'affiche sans ses scripts, et c\'est vous qui lancez chaque bloc. N\'exécutez pas un code sans savoir ce qu\'il fait. TextEdit ne vous demandera jamais de mot de passe.</span>'
+        bar.innerHTML = '<span class="trust-text"><b>Document reçu par lien.</b> Rien ne s\'y exécute tout seul : le HTML s\'affiche sans ses scripts, et c\'est vous qui lancez chaque bloc. N\'exécutez pas un code sans savoir ce qu\'il fait. OmniNote ne vous demandera jamais de mot de passe.</span>'
             + (deckDoc ? '<button type="button" class="trust-ok">Laisser le diaporama exécuter</button>' : "") + '<button type="button" class="trust-x" title="Fermer">×</button>';
         bar.querySelector(".trust-ok")?.addEventListener("click", () => trustDocument());
         bar.querySelector(".trust-x").addEventListener("click", () => bar.remove());
@@ -3279,7 +3279,7 @@ async function openVersion(v) {
 }
 
 // ---------------------------------------------------------------- écran d'ouverture
-// « TextEdit » s'écrit lettre par lettre pendant le chargement de la page, et le temps d'un changement de document.
+// « OmniNote » s'écrit lettre par lettre pendant le chargement de la page, et le temps d'un changement de document.
 
 const splash = $("#splash");
 let splashTimer = 0;
@@ -3924,8 +3924,8 @@ if (!(hasLink() && await openLink())) {
     kernel.start().catch(() => {});
 } else S.undoReady = true;
 cm.focus();
-setTimeout(() => dispatchEvent(new Event("textedit-ready")), 0);
-// L'écran d'ouverture reste le temps que « TextEdit » s'écrive et que les polices arrivent
+setTimeout(() => dispatchEvent(new Event("omninote-ready")), 0);
+// L'écran d'ouverture reste le temps que « OmniNote » s'écrive et que les polices arrivent
 // Une police qui arrive après coup (KaTeX, les fontes du code) change la taille des lignes et des formules :
 // l'éditeur les remesure, sinon le curseur se dessine à côté de l'endroit où l'on écrit
 for (const ev of ["keydown", "mousedown", "touchstart"]) cm.getWrapperElement().addEventListener(ev, () => { S.touched = true; }, { once: true, passive: true });

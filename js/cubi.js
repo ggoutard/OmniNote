@@ -1,5 +1,5 @@
-// Cubi dans TextEdit : l'IA locale de Web-Agentic-Model (un modèle de langage qui tourne dans le navigateur), branchée
-// par son API (Web-Agentic-Model/sdk/cubi.js). Rien n'est chargé tant qu'on n'a pas cliqué : TextEdit reste aussi léger.
+// Cubi dans OmniNote : l'IA locale de Web-Agentic-Model (un modèle de langage qui tourne dans le navigateur), branchée
+// par son API (Web-Agentic-Model/sdk/cubi.js). Rien n'est chargé tant qu'on n'a pas cliqué : OmniNote reste aussi léger.
 //
 // - Le logo, en bas à droite : un clic le réveille (le modèle se charge). Il ne fait que commenter, en petites
 //   phrases au-dessus de lui : « Bonjour ! On bosse sur … ? », puis ce qu'il fait (je lis, je réfléchis, j'écris).
@@ -17,8 +17,8 @@
 // Formules, code, liens et phrases _…_ (qui s'exécutent) sont remplacés par des marqueurs ⟦1⟧, ⟦2⟧… avant une
 // réécriture, et remis à leur place au retour : Cubi ne peut pas les abîmer.
 
-// Le modèle est publié à côté de TextEdit, sur le même site : ggoutard.github.io/Web-Agentic-Model/. En local (Go Live),
-// un dossier Web-Agentic-Model posé à côté de TextEdit sert d'abord ; sinon, la version publiée (en mode léger : le
+// Le modèle est publié à côté d'OmniNote, sur le même site : ggoutard.github.io/Web-Agentic-Model/. En local (Go Live),
+// un dossier Web-Agentic-Model posé à côté d'OmniNote sert d'abord ; sinon, la version publiée (en mode léger : le
 // personnage demande le même site).
 const MODEL_PATH = "../Web-Agentic-Model/";
 const MODEL_SITE = "https://ggoutard.github.io/Web-Agentic-Model/";
@@ -89,7 +89,7 @@ export function setupCubi({ cm, getTitle, toast, esc }) {
     words.innerHTML = `<p></p><small hidden></small>`;
 
     let ui = readPref();    // avec le personnage (le site du modèle en entier) ou mode léger
-    let base = null;        // l'adresse du modèle (à côté de TextEdit, ou la version publiée)
+    let base = null;        // l'adresse du modèle (à côté d'OmniNote, ou la version publiée)
     let cubi = null;        // la connexion (sdk/cubi.js)
     let sdk = null;         // le module, pour isQuestion
     let box = null;         // le grand champ, au-dessus du logo
@@ -168,7 +168,7 @@ export function setupCubi({ cm, getTitle, toast, esc }) {
         return connecting;
     }
 
-    // Le modèle à côté de TextEdit (le même site, ou un dossier posé à côté en local), sinon la version publiée.
+    // Le modèle à côté d'OmniNote (le même site, ou un dossier posé à côté en local), sinon la version publiée.
     async function findModel() {
         const near = new URL(MODEL_PATH, location.href).href;
         const ok = await fetch(new URL("sdk/cubi.js", near), { method: "HEAD", cache: "no-store" }).then((r) => r.ok).catch(() => false);

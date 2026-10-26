@@ -529,7 +529,7 @@ bar(["pli %d" % (k + 1) for k in range(5)], scores, title="Précision sur chaque
 ---
 mode: scientifique
 auteurs: Projet Iris
-affiliation: Atelier TextEdit
+affiliation: Atelier OmniNote
 date: 17 octobre 2026
 résumé: Nous comparons une règle de botaniste à deux seuils à un perceptron multicouche de 67 paramètres appris par descente de gradient sur les iris de Fisher [@fisher1936]. Le réseau atteint une précision de {{acc_test}} sur 45 fleurs de test, et de {{cv_moyenne}} ± {{cv_ecart}} en validation croisée à 5 plis, pour une entropie moyenne de {{incertitude}} ; la règle obtient {{precision_botaniste}} sur les 150 fleurs.
 mots-clés: réseau de neurones, rétropropagation, iris, reproductibilité

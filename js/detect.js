@@ -1,4 +1,4 @@
-// TextEdit — reconnaître du code collé et son langage.
+// OmniNote — reconnaître du code collé et son langage.
 //
 // Un collage dans le texte devient un bloc de code quand il en est un : le presse-papiers le dit parfois
 // (VS Code donne le langage, une page web le met dans la classe de son <pre>), sinon des indices pondérés
@@ -65,7 +65,7 @@ const CLUES = {
     ],
 };
 
-// Les langages de VS Code et des pages web, vers ceux de TextEdit
+// Les langages de VS Code et des pages web, vers ceux d'OmniNote
 const ALIASES = {
     py: "python", python3: "python", ipython: "python", js: "javascript", jsx: "javascript", ts: "javascript", typescript: "javascript",
     javascriptreact: "javascript", typescriptreact: "javascript", node: "javascript", "c++": "cpp", cc: "cpp", cxx: "cpp", hpp: "cpp",

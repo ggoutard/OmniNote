@@ -200,7 +200,7 @@ export function lexiconOf(text) {
 /** Le texte du document, avec ce lexique (le bloc remplacé, ajouté à la fin, ou retiré s'il est vide). */
 export function withLexicon(text, lex) {
     const lines = [...lex.readings.map((r) => `lecture : ${readingText(r)}`), ...lex.tournures.map((t) => `tournure : ${t.motif} → ${t.forme}`)];
-    const block = lines.length ? `<!-- lexique — ce que ce document a appris (TextEdit) :\n${lines.join("\n")}\n-->` : "";
+    const block = lines.length ? `<!-- lexique — ce que ce document a appris (OmniNote) :\n${lines.join("\n")}\n-->` : "";
     if (BLOCK.test(text)) return text.replace(BLOCK, block).replace(/\n{3,}$/, "\n");
     return block ? `${text.replace(/\s*$/, "")}\n\n${block}\n` : text;
 }

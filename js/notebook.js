@@ -54,7 +54,7 @@ export function fromIpynb(json, fallbackTitle = "Notebook importé") {
         meta: { imported: true },
         updated: Date.now(),
     };
-    // les pages de TextEdit : chaque cellule porte le numéro de la sienne (metadata.lumen.page)
+    // les pages d'OmniNote : chaque cellule porte le numéro de la sienne (metadata.lumen.page)
     const lumen = nb.metadata?.lumen || {}, names = lumen.pages;
     if (Array.isArray(names) && names.length) {
         out.pages = names.map((name, k) => ({ name: String(name || ""), path: lumen.paths?.[k] || null, cells: cells.filter((_, j) => pageOf[j] === k) }));
@@ -89,7 +89,7 @@ export function toIpynb(nb) {
         nbformat: 4,
         nbformat_minor: 5,
         metadata: {
-            kernelspec: { name: "lumen", display_name: "TextEdit (JarWeBox)", language: "python" },
+            kernelspec: { name: "lumen", display_name: "OmniNote (JarWeBox)", language: "python" },
             language_info: { name: "python", version: "3.7", file_extension: ".py", mimetype: "text/x-python" },
             lumen: { title: nb.title, version: 1, ...(paged ? { pages: nb.pages.map((p) => p.name || ""), paths: nb.pages.map((p) => p.path || null), page: nb.page | 0, ...(nb.dirs?.length ? { dirs: nb.dirs } : {}) } : {}) },
         },

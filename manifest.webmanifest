@@ -1,6 +1,6 @@
 {
-  "name": "TextEdit",
-  "short_name": "TextEdit",
+  "name": "OmniNote",
+  "short_name": "OmniNote",
   "description": "Un éditeur Markdown dont le code s'exécute dans une machine Linux émulée, entièrement dans le navigateur, même hors ligne.",
   "lang": "fr",
   "start_url": "./",

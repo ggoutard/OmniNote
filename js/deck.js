@@ -1367,7 +1367,7 @@ export class Deck {
     // ---- vue présentateur : une autre fenêtre, diapositive en cours, suivante, notes, chronomètre
     presenter() {
         if (this.pres && !this.pres.closed) { this.pres.focus(); return; }
-        const w = open("", "textedit-presenter", "popup,width=1180,height=720");
+        const w = open("", "omninote-presenter", "popup,width=1180,height=720");
         if (!w) { this.env.toast?.("La fenêtre du présentateur est bloquée par le navigateur"); return; }
         this.pres = w;
         const d = w.document;

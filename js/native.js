@@ -1,4 +1,4 @@
-// La machine native : la page est servie par le conteneur Docker de TextEdit (tools/native/server.py), qui fait
+// La machine native : la page est servie par le conteneur Docker d'OmniNote (tools/native/server.py), qui fait
 // tourner la même machine sans émulateur. Cet objet remplace JarWeBox auprès du noyau (kernel.js) : les mêmes
 // commandes du lanceur (SH, NEW, PUT, RUN…) partent par HTTP, les trames du noyau arrivent par Server-Sent Events.
 // Pas d'écran : les fenêtres (tkinter, Swing) ne s'ouvrent que dans la machine émulée.

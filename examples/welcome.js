@@ -1,4 +1,4 @@
-// welcome.js — Notebooks d'exemple : la visite de TextEdit, une analyse de données polyglotte, un article, un diaporama.
+// welcome.js — Notebooks d'exemple : la visite d'OmniNote, une analyse de données polyglotte, un article, un diaporama.
 import { newCell } from "../js/notebook.js";
 
 const md = (s) => newCell("markdown", "markdown", s.trim() + "\n");
@@ -7,12 +7,12 @@ const code = (lang, s) => newCell("code", lang, s.trim());
 export function welcome() {
     return {
         id: "bienvenue",
-        title: "Bienvenue dans TextEdit",
+        title: "Bienvenue dans OmniNote",
         meta: { example: true },
         updated: Date.now(),
         cells: [
             md(`
-# Bienvenue dans TextEdit
+# Bienvenue dans OmniNote
 
 Un éditeur de documents où **le code s'exécute entièrement dans votre navigateur** : quatorze langages, dans une vraie machine Linux x86 émulée en WebAssembly. Aucun serveur, aucune installation, rien qui sorte de chez vous. Le même fichier sert à **calculer**, à **présenter** et à **publier** : notebook, diaporama et article scientifique.
 
@@ -373,10 +373,10 @@ Le logo en bas à droite : **Cubi**, un modèle de langage qui tourne **dans vot
 
 ## 10. Partager
 
-- **\`/lien\`** : le document entier dans une adresse, à envoyer tel quel (rien n'est enregistré sur un serveur). On choisit le **mot d'accueil** tapé à l'ouverture à la place de « TextEdit », si les résultats des blocs voyagent avec, et s'il s'ouvre **en lecture seule**.
+- **\`/lien\`** : le document entier dans une adresse, à envoyer tel quel (rien n'est enregistré sur un serveur). On choisit le **mot d'accueil** tapé à l'ouverture à la place de « OmniNote », si les résultats des blocs voyagent avec, et s'il s'ouvre **en lecture seule**.
 - **\`/pdf\`** : le document tel qu'on le lit, résultats compris ; **\`/copier\`** : le document et ses résultats dans le presse-papiers, en Markdown et mis en forme.
 - **\`/télécharger\`** : un \`.ipynb\` standard (Jupyter, VS Code, GitHub) ; **\`/markdown\`** : un \`.md\` ; **\`/ouvrir\`** : un \`.ipynb\` ou un \`.md\`.
-- Le document s'enregistre tout seul dans le navigateur ; **\`/hors ligne\`** garde TextEdit et sa machine pour travailler sans réseau.
+- Le document s'enregistre tout seul dans le navigateur ; **\`/hors ligne\`** garde OmniNote et sa machine pour travailler sans réseau.
 
 ## 11. Raccourcis
 
@@ -405,7 +405,7 @@ export function article() {
 ---
 mode: scientifique
 auteurs: Xxxxx Xxxxx, Yyyyy Yyyyy
-affiliation: Atelier TextEdit
+affiliation: Atelier OmniNote
 date: 16 octobre 2026
 résumé: Nous vérifions par simulation la loi faible des grands nombres [@bernoulli1713] : la fréquence des piles dans {{n}} lancers d'une pièce équilibrée vaut {{frequence}}, à {{ecart}} de la probabilité théorique. Les nombres de ce résumé ne sont pas recopiés : ils sont calculés par le document lui-même, et changent si l'on relance la simulation.
 mots-clés: probabilités, simulation, reproductibilité
@@ -547,7 +547,7 @@ const SCHEMA = "data:image/svg+xml," + encodeURIComponent(`<svg xmlns="http://ww
 export function presentation() {
     return {
         id: "presentation",
-        title: "TextEdit en dix diapositives",
+        title: "OmniNote en dix diapositives",
         meta: { example: true },
         updated: Date.now(),
         cells: [
@@ -557,7 +557,7 @@ mode: présentation
 auteur: Xxxxx Xxxxx
 date: 16 octobre 2026
 ---
-# TextEdit, un document qui calcule
+# OmniNote, un document qui calcule
 
 Du texte, des formules et du code qui s'exécutent : présentés tels quels.
 

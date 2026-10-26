@@ -1,9 +1,9 @@
-SOURCES CORRESPONDANTES — TextEdit
+SOURCES CORRESPONDANTES — OmniNote
 ==================================
 
 Auteur : ggoutard — contact (licences et demandes de sources) : contact.ggoutard@gmail.com
 
-La machine de TextEdit est l'image de JarWeBox, à laquelle s'ajoutent trois extensions
+La machine d'OmniNote est l'image de JarWeBox, à laquelle s'ajoutent trois extensions
 (jarwebox/image/cdrom-*, et l'image mémoire jarwebox/image/state-*.bin.zst qui les contient
 une fois montées). Pour les composants de JarWeBox, voir licenses/jarwebox/SOURCES.txt.
 
