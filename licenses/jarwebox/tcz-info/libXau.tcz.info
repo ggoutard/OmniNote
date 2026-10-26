@@ -1,0 +1,13 @@
+Title:          libXau.tcz
+Description:    libXau
+Version:        1.0.9
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		4KB
+Extension_by:   Curaga
+Tags:		libXau
+Comments:       -
+Change-log:     2013/06/15 first version
+                2015/12/28 factored out dev files (juanito)
+Current:	2019/11/10 updated 1.0.8 -> 1.0.9 (juanito)

@@ -1,0 +1,48 @@
+{
+  "name": "TextEdit",
+  "short_name": "TextEdit",
+  "description": "Un éditeur Markdown dont le code s'exécute dans une machine Linux émulée, entièrement dans le navigateur, même hors ligne.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
+  "background_color": "#ffffff",
+  "theme_color": "#18181b",
+  "categories": [
+    "productivity",
+    "education",
+    "developer"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "./?ted=1",
+      "accept": {
+        "application/vnd.textedit+json": [
+          ".ted"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+Title:          libICE.tcz
+Description:    ICE
+Version:        1.0.10
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		36KB
+Extension_by:   Curaga
+Tags:		ICE
+Comments:       -
+Change-log:     2013/06/15 first version
+                2015/12/17 updated 1.0.8 -> 1.0.9 (juanito)
+Current:	2019/11/10 updated 1.0.9 -> 1.0.10 (juanito)

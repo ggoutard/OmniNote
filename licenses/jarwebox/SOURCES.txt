@@ -1,0 +1,47 @@
+﻿SOURCES CORRESPONDANTES
+=======================
+
+Auteur de JarWeBox : ggoutard
+Contact (licences et demandes de sources) : contact.ggoutard@gmail.com
+
+Les composants sous GPL ou LGPL (voir NOTICE.txt) sont redistribués sans modification.
+Leurs sources, aux versions exactes des binaires publiés, sont jointes à chaque version
+dans les Releases GitHub du projet :
+    https://github.com/ggoutard/JarWeBox/releases/tag/v1.0
+: archives jarwebox-sources-*.tar, avec
+SHA256SUMS.txt et MANIFEST.txt (générées par tools/fetch_sources.py). Origine de chacune :
+
+* Noyau Linux 5.4.3-tinycore (sources patchées, configuration)
+    http://tinycorelinux.net/11.x/x86/release/src/kernel/
+* BusyBox 1.31.1 (archive, patchs, configuration, script de compilation)
+    http://tinycorelinux.net/11.x/x86/release/src/busybox/
+* glibc 2.30, util-linux, e2fsprogs, coreutils et autres composants du système de base
+    http://tinycorelinux.net/11.x/x86/release/src/toolchain/   (script : compile_tc11_x86)
+* rxvt-unicode 9.22 (terminal X des applications console)
+    http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.22.tar.bz2
+* glibc 2.30 : localedef et sources des locales (extensions glibc_apps, glibc_i18n_locale)
+    http://tinycorelinux.net/11.x/x86/release/src/toolchain/glibc-2.30.tar.xz
+* Bibliothèques de l'extension native.tcz (paquets Debian 10, versions dans NOTICE.txt) :
+  paquets source Debian aux mêmes versions, par exemple pour Qt (qtbase-opensource-src) :
+    https://snapshot.debian.org/package/qtbase-opensource-src/5.11.3+dfsg1-1+deb10u5/
+    http://archive.debian.org/debian/pool/main/   (et debian-security, pour les versions +debXuY)
+* GnuCOBOL 3.2 (libcob) : https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.2.tar.xz
+    (options de compilation : tools/cpp/Dockerfile du dépôt)
+* Xvesa 1.3 (TinyX), compilé par Tiny Core le 2018-04-04 depuis le commit c44ec71 :
+    https://github.com/tinycorelinux/tinyx/tree/c44ec7197d83
+    script de compilation : http://tinycorelinux.net/9.x/x86/tcz/src/Xorg/compile_Xvesa
+* Autres extensions Tiny Core (bibliothèques X.Org, freetype, libpng, fontconfig, expat…) :
+  licences permissives, sans obligation de fournir les sources ; origines dans NOTICE.txt
+* SeaBIOS rel-1.16.2-0-gea1b7a0
+    https://github.com/coreboot/seabios (tag rel-1.16.2)
+* BellSoft Liberica JRE 8u402+7, build d'OpenJDK : sources publiées par BellSoft
+    https://download.bell-sw.com/java/8u402+7/bellsoft-jdk8u402+7-src.tar.gz
+* Recomposition de l'image (nos scripts de construction et de démarrage)
+    dossier tools/ du dépôt (guest/, cpp/, build_image.py…)
+
+OFFRE ÉCRITE (GPL-2.0 §3b, GPL-3.0 §6b, LGPL)
+---------------------------------------------
+En complément des archives publiées, et pendant au moins trois ans à compter de chaque
+distribution, ggoutard fournit à toute personne qui en fait la demande à contact.ggoutard@gmail.com
+une copie complète, lisible par machine, du code source correspondant aux composants GPL
+et LGPL ci-dessus, pour un prix ne dépassant pas le coût de la copie.

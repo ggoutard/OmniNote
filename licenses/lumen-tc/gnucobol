@@ -1,0 +1,7 @@
+GnuCOBOL 3.2 — https://www.gnu.org/software/gnucobol/
+Compilé depuis l'archive officielle https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.2.tar.xz (sans Berkeley DB).
+
+  cobc (le compilateur)          GNU General Public License v3 ou ultérieure : ../jarwebox/texts/GPL-3.0.txt
+  libcob (la bibliothèque)       GNU Lesser General Public License v3 ou ultérieure : ../jarwebox/texts/LGPL-3.0.txt
+
+Copyright (C) 2001-2023 Free Software Foundation, Inc.

@@ -1,0 +1,52 @@
+{
+  "state": "image/state-b250eb45cc.bin.zst",
+  "lumen": {
+    "kernel": "25ac35ae24e76642b005895b99e00d1be58458fd62c2c3fa1af20e943ade1005",
+    "hello": {
+      "t": "hello",
+      "version": "1.0",
+      "pid": 849,
+      "python": "3.7.3",
+      "sqlite": "3.27.2",
+      "langs": [
+        "python",
+        "sh",
+        "sql",
+        "tcl",
+        "scheme",
+        "awk",
+        "c",
+        "cpp",
+        "cobol",
+        "rust",
+        "go",
+        "php"
+      ]
+    },
+    "java": "1359c39b65c4b7d71fc68d6d370753c7305c30604d72075c46579e0dc46d4f51",
+    "helloJava": {
+      "t": "hello-java",
+      "langs": [
+        "javascript",
+        "java"
+      ],
+      "java": "1.8.0_402"
+    },
+    "ecj": "/usr/local/lumen-java/ecj.jar"
+  },
+  "preloaded": null,
+  "state_size": 44053250,
+  "cdrom": {
+    "url": "image/cdrom-8e77120c67/java.iso.zst",
+    "size": 339738624,
+    "chunk": 1048576
+  },
+  "screen": {
+    "width": 1024,
+    "height": 768
+  },
+  "hardware": {
+    "memory_size": 536870912,
+    "vga_memory_size": 8388608
+  }
+}

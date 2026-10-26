@@ -1,0 +1,25 @@
+libargon2-1 0~20171227-0.2
+libatomic1 8.3.0-6
+libbsd0 0.9.1-2+deb10u1
+libedit2 3.1-20181209-1
+libffi6 3.2.1-9
+libicu63 63.1-6+deb10u3
+libllvm7 1:7.0.1-8+deb10u2
+liblzma5 5.2.4-1+deb10u1
+libncurses6 6.1+20181013-2+deb10u5
+libpcre2-8-0 10.32-5+deb10u1
+libsodium23 1.0.17-1
+libssl1.1 1.1.1n-0+deb10u6
+libstd-rust-1.41 1.41.1+dfsg1-1~deb10u1
+libstd-rust-dev 1.41.1+dfsg1-1~deb10u1
+libtinfo6 6.1+20181013-2+deb10u5
+libxml2 2.9.4+dfsg1-7+deb10u6
+php7.3-cli 7.3.31-1~deb10u7
+php7.3-common 7.3.31-1~deb10u7
+php7.3-json 7.3.31-1~deb10u7
+php7.3-mbstring 7.3.31-1~deb10u7
+php7.3-readline 7.3.31-1~deb10u7
+rustc 1.41.1+dfsg1-1~deb10u1
+zlib1g 1:1.2.11.dfsg-1+deb10u2
+yaegi 0.16.1 (github.com/traefik/yaegi)
+go1.22.2 (bibliothèque standard de Go)

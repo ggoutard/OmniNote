@@ -1,0 +1,10 @@
+GnuCOBOL 3.2 — libcob (runtime library), built from the official source release:
+  https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.2.tar.xz
+  sha256 3bb48af46ced4779facf41fdc2ee60e4ccb86eaa99d010b36685315df39c2ee2
+  configure --without-db --without-xml2 --without-json --with-curses=ncursesw --disable-nls
+
+Copyright (C) Free Software Foundation, Inc.
+libcob is free software: you can redistribute it and/or modify it under the terms of the
+GNU Lesser General Public License as published by the Free Software Foundation, either
+version 3 of the License, or (at your option) any later version (see texts/LGPL-3.0.txt).
+The compiler (cobc) is GPL-3.0-or-later; it is not part of this runtime.

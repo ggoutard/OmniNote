@@ -1,0 +1,13 @@
+Title:          libXfont.tcz
+Description:    Xfont
+Version:        1.5.2
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		104KB
+Extension_by:   Curaga
+Tags:		Xfont
+Comments:       -
+Change-log:     2013/06/15 first version
+                2015/12/17 updated 1.4.5 -> 1.5.1 (juanito)
+Current:	2017/02/20 updated 1.5.1 -> 1.5.2 (juanito)

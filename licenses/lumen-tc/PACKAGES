@@ -1,0 +1,10 @@
+binutils 2.31.1-16
+g++-8 8.3.0-6
+gcc-8 8.3.0-6
+libc6-dev 2.28-10+deb10u4
+libgmp10 2:6.1.2+dfsg-4+deb10u1
+libisl19 0.20-2
+libmpc3 1.1.0-1
+libmpfr6 4.0.2-1
+zlib1g 1:1.2.11.dfsg-1+deb10u2
+gnucobol 3.2 (compilé depuis les sources, sans Berkeley DB)

@@ -1,0 +1,489 @@
+/* deck.css — le mode présentation (js/deck.js). Des styles sobres : fond uni et immobile, une seule couleur
+   d'accent, la hiérarchie portée par la typographie, des filets plutôt que des ombres. Ce qui bouge, c'est le
+   contenu (apparitions, ce qui glisse d'une diapositive à l'autre), jamais le décor.
+   La diapositive mesure toujours 1280 × 720 : elle est mise à l'échelle de l'écran. */
+
+/* ---- classique (par défaut) : blanc ou noir comme l'éditeur, le bleu de l'éditeur */
+.deck, .dk-presenter, .deck-print {
+  --dk-bg: #111113;
+  --dk-text: #EDEDEF;
+  --dk-muted: #A1A1AA;
+  --dk-faint: #6E6E78;
+  --dk-card: #18181B;
+  --dk-card-2: #232327;
+  --dk-line: #2C2C32;
+  --dk-a: #6B9BFF;
+  --dk-on-a: #0B0B0D;
+  --dk-ok: #3FB950;
+  --dk-err: #F85149;
+  --dk-ink: #FF4D4D;
+  --dk-head: var(--font);
+  --dk-body: var(--font);
+  --dk-head-weight: 700;
+  --dk-track: -.025em;
+  --dk-radius: 10px;
+  --dk-ease: cubic-bezier(.16, 1, .3, 1);
+}
+.deck.dk-light, .dk-presenter.dk-light, .deck-print.dk-light {
+  --dk-bg: #FFFFFF;
+  --dk-text: #18181B;
+  --dk-muted: #52525B;
+  --dk-faint: #8A8A93;
+  --dk-card: #F7F7F8;
+  --dk-card-2: #EFEFF1;
+  --dk-line: #E4E4E7;
+  --dk-a: #1F5EFF;
+  --dk-on-a: #FFFFFF;
+  --dk-ok: #1A7F37;
+  --dk-err: #CF222E;
+}
+
+body.presenting { overflow: hidden; }
+body.presenting .lx-float { z-index: 260; }
+body.presenting .toasts { z-index: 300; }
+
+.deck { position: fixed; inset: 0; z-index: 200; overflow: hidden; background: var(--dk-bg); color: var(--dk-text); font-family: var(--dk-body); outline: none; -webkit-font-smoothing: antialiased; }
+.deck.dk-idle { cursor: none; }
+.dk-backdrop { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---- la scène */
+.dk-viewport { position: absolute; inset: 0; }
+.dk-stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+.dk-slide { position: absolute; inset: 0; overflow: hidden; --fit: 1; background: var(--dk-slide-bg, var(--dk-bg)); }
+.dk-slide.dk-has-bg::before { content: ""; position: absolute; inset: 0; background: var(--dk-bg-img) center / cover no-repeat; }
+.dk-slide.l-image.dk-has-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, .65)); }
+.dk-slide.l-image .dk-frame { justify-content: flex-end; color: #fff; z-index: 1; }
+.dk-leaving { pointer-events: none; }
+
+.dk-frame { position: absolute; inset: 64px 92px 76px; display: flex; flex-direction: column; gap: 32px; font-size: calc(28px * var(--fit)); line-height: 1.45; }
+.dk-head:empty { display: none; }
+.dk-head > * { margin: 0; font: var(--dk-head-weight) calc(46px * var(--fit))/1.1 var(--dk-head); letter-spacing: var(--dk-track); text-wrap: balance; }
+.dk-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; align-content: start; }
+.dk-side:empty { display: none; }
+.dk-main, .dk-side { min-width: 0; }
+.dk-chunk + .dk-chunk, .dk-chunk + .dk-cell, .dk-cell + .dk-chunk, .dk-cell + .dk-cell { margin-top: .7em; }
+
+/* ---- le texte */
+.dk-chunk > :first-child { margin-top: 0; }
+.dk-chunk > :last-child { margin-bottom: 0; }
+.dk-chunk p { margin: 0 0 .65em; text-wrap: pretty; }
+.dk-chunk h1, .dk-chunk h2 { margin: 0 0 .4em; font: var(--dk-head-weight) 1.65em/1.1 var(--dk-head); letter-spacing: var(--dk-track); text-wrap: balance; }
+.dk-chunk h3 { margin: .9em 0 .35em; font: 650 1.1em/1.25 var(--dk-head); }
+.dk-chunk h4 { margin: .8em 0 .3em; font-size: .7em; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; color: var(--dk-faint); }
+.dk-chunk ul, .dk-chunk ol { margin: 0 0 .65em; padding-left: 1.1em; }
+.dk-chunk li { margin: .3em 0; padding-left: .25em; }
+.dk-chunk li::marker { color: var(--dk-faint); }
+.dk-chunk ol > li::marker { font-variant-numeric: tabular-nums; }
+.dk-chunk strong { font-weight: 650; }
+.dk-chunk a:not(.dk-btn) { color: var(--dk-a); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.dk-chunk :not(pre) > code { padding: .05em .32em; border-radius: 4px; background: var(--dk-card-2); font: .84em var(--mono); }
+.dk-chunk blockquote { margin: 0 0 .7em; padding: 0 0 0 .9em; border-left: 3px solid var(--dk-line); color: var(--dk-muted); }
+.dk-chunk hr { border: 0; height: 1px; background: var(--dk-line); margin: 1em 0; }
+.dk-chunk img { max-width: 100%; max-height: 460px; border-radius: var(--dk-radius); }
+.dk-chunk table { border-collapse: collapse; font-size: .7em; width: 100%; font-variant-numeric: tabular-nums; }
+.dk-chunk th { text-align: left; padding: .5em .8em; font-weight: 650; color: var(--dk-muted); border-bottom: 1.5px solid var(--dk-text); }
+.dk-chunk td { padding: .55em .8em; border-bottom: 1px solid var(--dk-line); }
+.dk-chunk .math-block { margin: .4em 0 .8em; font-size: 1.1em; }
+.dk-chunk .md-code { margin: 0 0 .7em; padding: 16px 20px; border-radius: var(--dk-radius); background: var(--dk-card); font: .66em/1.6 var(--mono); white-space: pre-wrap; }
+.dk-chunk .md-code .md-lang { display: none; }
+.dk-chunk .callout { margin: 0 0 .7em; padding: .6em .9em; border-left: 3px solid var(--dk-a); background: var(--dk-card); }
+.dk-chunk .callout-title { margin: 0 0 .2em; font-size: .7em; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: var(--dk-a); }
+.dk-chunk .mermaid-src svg { max-width: 100%; height: auto; max-height: 470px; }
+.dk-faint { color: var(--dk-faint); }
+
+/* les boutons : [Démo](#4), [Suite](#suivant), [▶](#executer) */
+a.dk-btn { display: inline-flex; align-items: center; gap: .4em; margin: .15em .25em .15em 0; padding: .32em .9em; border: 1.5px solid var(--dk-text); border-radius: 6px; color: var(--dk-text); font-size: .72em; font-weight: 600; text-decoration: none; transition: background .15s, color .15s; }
+a.dk-btn:hover { background: var(--dk-text); color: var(--dk-bg); }
+/* … et où il mène : « → 7 · Le code qui change » */
+.dk-btn-to { margin-left: .35em; padding-left: .55em; border-left: 1px solid currentColor; font-size: .84em; font-weight: 450; opacity: .72; white-space: nowrap; }
+
+/* les phrases _…_ et leurs résultats */
+.deck .pr-phrase, .deck-print .pr-phrase, .dk-presenter .pr-phrase { padding: .02em .32em; border-radius: 4px; font: .84em var(--mono); background: var(--dk-card-2); color: var(--dk-text); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.dk-glres { margin: -.3em 0 .75em; padding-left: .8em; border-left: 2px solid var(--dk-a); font: .74em/1.5 var(--mono); color: var(--dk-muted); white-space: pre-wrap; }
+
+/* ---- les dispositions */
+.l-couverture .dk-frame, .l-section .dk-frame, .l-fin .dk-frame, .l-annonce .dk-frame, .l-centre .dk-frame, .l-citation .dk-frame { justify-content: center; }
+.l-couverture .dk-body, .l-section .dk-body, .l-fin .dk-body, .l-annonce .dk-body, .l-centre .dk-body, .l-citation .dk-body { flex: 0 1 auto; }
+.l-couverture h1 { margin: 0 0 .35em; font: var(--dk-head-weight) calc(80px * var(--fit))/1.02 var(--dk-head); letter-spacing: calc(var(--dk-track) * 1.5); }
+.l-couverture p { max-width: 900px; font-size: 1.05em; color: var(--dk-muted); }
+.dk-byline { margin-top: 1.8em; padding-top: .9em; border-top: 1px solid var(--dk-line); max-width: 900px; font-size: .58em; font-weight: 550; color: var(--dk-faint); }
+.l-section :is(h1, h2), .l-fin :is(h1, h2) { font: var(--dk-head-weight) calc(68px * var(--fit))/1.04 var(--dk-head); letter-spacing: calc(var(--dk-track) * 1.4); }
+.l-section :is(h1, h2)::before { content: ""; display: block; width: 48px; height: 4px; margin-bottom: 28px; background: var(--dk-a); }
+.l-section p, .l-fin p { color: var(--dk-muted); max-width: 860px; }
+.l-centre .dk-main { text-align: center; }
+.l-annonce p { font: 650 1.75em/1.18 var(--dk-head); letter-spacing: var(--dk-track); text-wrap: balance; max-width: 1020px; }
+.l-annonce strong { color: var(--dk-a); }
+.l-citation blockquote { margin: 0; padding: 0 0 0 1em; max-width: 1000px; border-left: 4px solid var(--dk-a); font: 500 1.4em/1.3 var(--dk-head); letter-spacing: -.012em; color: var(--dk-text); text-wrap: balance; }
+.l-citation blockquote p:last-child:not(:first-child) { margin-top: 1em; font: 500 .5em var(--dk-body); letter-spacing: 0; color: var(--dk-faint); }
+.l-citation blockquote p:last-child:not(:first-child)::before { content: "— "; }
+.l-colonnes .dk-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; align-content: start; }
+.dk-flip .dk-main { order: 2; }
+
+/* ---- les images : arrange() (deck.js) donne à chacune sa taille ; ici, les places */
+/* à côté du texte : la colonne de l'image a la largeur qui convient à ses proportions */
+.l-image-droite .dk-body, .l-image-gauche .dk-body { grid-template-columns: minmax(0, 1fr) var(--media-w, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); align-items: center; align-content: stretch; }
+/* sous le texte (une image panoramique), seule sous le titre, ou plusieurs : le texte, puis toute la place qui reste */
+:is(.l-figure, .l-galerie, .dk-stack) .dk-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); row-gap: 0; align-content: stretch; }
+:is(.l-figure, .l-galerie, .dk-stack) .dk-main:not(:empty) { margin-bottom: 28px; }
+:is(.l-figure, .l-galerie, .dk-stack) .dk-side { grid-row: 2; }
+.dk-stack.dk-flip .dk-main { order: 0; }
+.dk-media { align-self: stretch; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+.dk-row { display: flex; justify-content: center; align-items: flex-start; }
+.dk-fig { margin: 0; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.dk-fig img { display: block; max-width: none; max-height: none; border-radius: var(--dk-radius); }
+.dk-fig a { display: block; }
+.dk-fig figcaption { max-width: 100%; margin-top: 10px; font-size: .62em; line-height: 1.35; color: var(--dk-faint); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dk-measure .dk-fig img { width: 1px !important; height: 1px !important; }
+.dk-measure .dk-fig { width: auto !important; }
+/* une image en fond : bord à bord, ou entière sur un fond d'elle-même flouté si ses proportions ne sont pas celles de l'écran */
+.dk-full { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.dk-contain .dk-full { object-fit: contain; }
+.dk-slide.dk-contain::before { filter: blur(40px) saturate(1.2) brightness(.6); transform: scale(1.2); }
+/* layout: image-droite + image: x.png (comme Slidev) : l'image sur sa moitié, bord à bord */
+.dk-halfimg { position: absolute; top: 0; bottom: 0; right: 0; width: 50%; background: center / cover no-repeat; }
+.dk-flip .dk-halfimg { right: auto; left: 0; }
+.dk-half .dk-frame { right: calc(50% + 64px); }
+.dk-half.dk-flip .dk-frame { right: 92px; left: calc(50% + 64px); }
+.dk-half .dk-body { grid-template-columns: minmax(0, 1fr); }
+.dk-half .dk-foot { right: calc(50% + 64px); }
+.dk-half.dk-flip .dk-foot { left: calc(50% + 64px); }
+
+/* ---- le code : son langage, ▶, ses résultats à côté */
+.dk-cell { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.dk-cell.dk-side-out { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+.dk-cell-code { min-width: 0; background: var(--dk-card); border-radius: var(--dk-radius); overflow: hidden; outline: 1.5px solid transparent; transition: outline-color .15s; }
+.dk-cell-code:focus-within { outline-color: var(--dk-a); }
+.dk-cell-bar { display: flex; align-items: center; gap: 12px; padding: 9px 10px 9px 18px; border-bottom: 1px solid var(--dk-line); font: 600 12px/1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--dk-faint); }
+.dk-status { margin-left: auto; font: 500 12px var(--mono); letter-spacing: 0; text-transform: none; }
+.dk-status.live { color: var(--dk-a); }
+.dk-status.ok { color: var(--dk-ok); }
+.dk-status.err { color: var(--dk-err); }
+.dk-run { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 9px; border: 0; border-radius: 6px; background: var(--dk-a); color: var(--dk-on-a); font: 600 12px/1 var(--font); text-transform: none; letter-spacing: 0; cursor: pointer; }
+.dk-run:hover { filter: brightness(1.08); }
+.dk-run svg { width: 10px; height: 10px; fill: currentColor; }
+.dk-running .dk-run { opacity: .6; }
+.dk-code { margin: 0; padding: 18px 22px 20px; max-height: 486px; overflow: auto; font: calc(19px * var(--fit))/1.62 var(--mono); white-space: pre; background: none; color: var(--k-text); tab-size: 4; }
+.dk-code code { display: block; min-height: 1em; outline: none; font: inherit; caret-color: var(--dk-a); }
+.dk-l { display: inline-block; min-width: 1px; }
+.dk-code { position: relative; }
+/* ```python {2|3-4|all} : les lignes surlignées ; les autres s'estompent */
+.dk-code.dk-hl .dk-l { min-width: 100%; margin: 0 -10px; padding: 0 10px; border-radius: 4px; transition: opacity .5s var(--dk-ease), background-color .5s var(--dk-ease); }
+.dk-code.dk-hl .dk-l.dim { opacity: .28; }
+.dk-code.dk-hl .dk-l.lit { background: color-mix(in srgb, var(--dk-a) 13%, transparent); }
+.dk-ghost { pointer-events: none; }
+/* <span v-mark.circle.red="2"> : la marque, tracée à la main au clic */
+.dk-vmark { position: relative; display: inline-block; }
+.dk-mk { position: absolute; overflow: visible; pointer-events: none; fill: none; stroke: var(--mk); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+.dk-vmark-highlight { background: linear-gradient(color-mix(in srgb, var(--mk) 42%, transparent), color-mix(in srgb, var(--mk) 42%, transparent)) no-repeat 0 62% / 0 72%; transition: background-size .8s var(--dk-ease); border-radius: .15em; }
+.dk-vmark-highlight.on { background-size: 100% 72%; }
+.dk-out { min-width: 0; display: grid; gap: 12px; font-size: calc(18px * var(--fit)); }
+.dk-out:empty { display: none; }
+.dk-out .out-stream, .dk-out .out-text { margin: 0; padding: 16px 20px; border-radius: var(--dk-radius); background: var(--dk-card); font: calc(18px * var(--fit))/1.55 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--dk-text); max-height: 470px; overflow: auto; }
+.dk-out .out-stream.stderr { color: var(--dk-err); }
+.dk-out .out-error { padding: 14px 18px; border-radius: var(--dk-radius); border-left: 3px solid var(--dk-err); background: var(--dk-card); font: 15px/1.5 var(--mono); color: var(--dk-err); }
+.dk-out .out-img, .dk-out svg { max-width: 100%; height: auto; border-radius: var(--dk-radius); }
+.dk-out .out-rich { min-width: 0; }
+.dk-out .input-ask { padding: 12px 16px; border-radius: var(--dk-radius); background: var(--dk-card); outline: 1.5px solid var(--dk-a); font: 16px var(--mono); }
+.dk-out .input-ask input { font: inherit; color: var(--dk-text); background: none; border: 0; outline: none; border-bottom: 1px solid var(--dk-line); }
+.dk-out-empty { padding: 16px 20px; border: 1px dashed var(--dk-line); border-radius: var(--dk-radius); color: var(--dk-faint); font: 15px var(--font); }
+.dk-noecho .dk-out { font-size: calc(22px * var(--fit)); }
+.dk-page .dk-out iframe { border: 0; width: 100%; border-radius: var(--dk-radius); background: #fff; }
+
+/* ---- les mots d'un titre, chacun dans un masque (ils montent l'un après l'autre) */
+.dk-w { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em 0 .14em; margin: -.12em 0 -.14em; }
+.dk-w > span { display: inline-block; will-change: transform; }
+
+/* ---- les étapes (clics) */
+.dk-slide [data-step] { transition: opacity .7s var(--dk-ease), transform .7s var(--dk-ease), filter .7s var(--dk-ease); }
+.dk-slide .dk-hide { opacity: 0 !important; transform: translateY(18px); pointer-events: none; }
+.dk-slide li.dk-hide { transform: translateX(-22px); }
+.dk-slide .dk-still { transition: none !important; }
+.dk-slide[data-enter="douce"] .dk-hide { transform: none; }
+.dk-slide[data-enter="zoom"] .dk-hide { transform: scale(.97); }
+.dk-slide[data-enter="glisse"] .dk-hide { transform: translateX(-12px); }
+.dk-slide[data-enter="machine"] .dk-hide { transform: none; clip-path: inset(0 100% 0 0); }
+.dk-slide[data-enter="machine"] [data-step] { transition: opacity .2s, clip-path .8s steps(24, end); }
+.dk-slide[data-enter="aucune"] [data-step] { transition: none; }
+
+/* ---- pied de diapositive */
+.dk-foot { position: absolute; left: 92px; right: 92px; bottom: 30px; display: flex; justify-content: space-between; gap: 24px; font: 500 13px/1 var(--font); color: var(--dk-faint); pointer-events: none; }
+.dk-foot span:last-child { font-variant-numeric: tabular-nums; }
+.dk-foot-who, .dk-foot-date, .dk-mini { display: none; }
+.dk-byline span + span::before { content: " · "; }
+.l-image .dk-foot { color: rgba(255, 255, 255, .75); z-index: 1; }
+
+/* ---- les commandes */
+.dk-progress { position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 5; pointer-events: none; }
+.dk-progress i { display: block; height: 100%; background: var(--dk-a); transform-origin: left; transform: scaleX(0); transition: transform .4s var(--dk-ease); }
+.dk-bar { position: absolute; left: 50%; bottom: 16px; z-index: 6; display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 8px; transform: translateX(-50%); background: var(--dk-card); border: 1px solid var(--dk-line); transition: opacity .25s; }
+.dk-idle .dk-bar { opacity: 0; pointer-events: none; }
+.dk-bar button { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--dk-muted); cursor: pointer; }
+.dk-bar button:hover { background: var(--dk-card-2); color: var(--dk-text); }
+.dk-bar button.on { background: var(--dk-a); color: var(--dk-on-a); }
+.dk-bar svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.dk-count { min-width: 62px; text-align: center; font: 600 13px/1 var(--font); font-variant-numeric: tabular-nums; color: var(--dk-text); }
+.dk-sep { width: 1px; height: 18px; margin: 0 5px; background: var(--dk-line); }
+.dk-ink { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+.deck[data-tool="pen"] .dk-ink { pointer-events: auto; cursor: crosshair; }
+.deck[data-tool="laser"], .deck[data-tool="laser"] * { cursor: none !important; }
+.dk-laser { position: fixed; z-index: 9; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #FF2D2D; box-shadow: 0 0 8px 2px rgba(255, 45, 45, .6); pointer-events: none; }
+.dk-notes { position: absolute; left: 50%; bottom: 66px; z-index: 5; width: min(920px, calc(100vw - 32px)); max-height: 32vh; overflow: auto; padding: 14px 20px; transform: translateX(-50%); border-radius: 8px; background: var(--dk-card); border: 1px solid var(--dk-line); font: 16px/1.55 var(--font); color: var(--dk-text); }
+.dk-notes p { margin: 0 0 .5em; }
+.dk-goto { position: absolute; top: 20px; left: 50%; z-index: 9; padding: 8px 16px; transform: translateX(-50%); border-radius: 8px; background: var(--dk-card); border: 1px solid var(--dk-line); font: 600 15px var(--font); }
+.dk-blank { position: absolute; inset: 0; z-index: 10; background: #000; cursor: pointer; }
+.dk-blank[data-color="white"] { background: #fff; }
+.dk-end { position: absolute; inset: 0; z-index: 10; display: grid; place-content: center; gap: 10px; text-align: center; background: #000; color: #fff; cursor: pointer; }
+.dk-end p { margin: 0; font: 600 26px var(--font); }
+.dk-end small { color: rgba(255, 255, 255, .55); font-size: 14px; }
+
+/* ---- le menu PDF de la barre */
+.dk-menu { position: absolute; bottom: 62px; left: 50%; z-index: 7; display: grid; min-width: 260px; padding: 4px; transform: translateX(-50%); border-radius: 8px; background: var(--dk-card); border: 1px solid var(--dk-line); box-shadow: 0 16px 40px -16px rgba(0, 0, 0, .45); animation: dk-pop .35s var(--dk-ease); }
+.dk-menu button { display: grid; gap: 2px; padding: 9px 12px; border: 0; border-radius: 6px; background: none; color: var(--dk-text); font: 600 14px var(--font); text-align: left; cursor: pointer; }
+.dk-menu button small { font-weight: 400; font-size: 12px; color: var(--dk-faint); }
+.dk-menu button:hover { background: var(--dk-card-2); }
+@keyframes dk-pop { from { opacity: 0; transform: translate(-50%, 8px) scale(.98); } }
+
+/* ---- vue d'ensemble */
+.dk-over { position: absolute; inset: 0; z-index: 8; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px; align-content: start; padding: 48px; overflow: auto; background: var(--dk-bg); }
+.dk-thumb { position: relative; display: block; width: 100%; padding: 0; overflow: hidden; border: 1px solid var(--dk-line); border-radius: 6px; color: var(--dk-text); background: var(--dk-bg); cursor: pointer; text-align: left; font: inherit; }
+.dk-thumb::before { content: ""; display: block; padding-top: 56.25%; }
+.dk-thumb:hover { border-color: var(--dk-muted); }
+.dk-thumb.sel { outline: 2px solid var(--dk-a); outline-offset: 2px; }
+.dk-thumb-stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; pointer-events: none; }
+.dk-thumb > span { position: absolute; left: 8px; bottom: 6px; padding: 1px 7px; border-radius: 4px; background: var(--dk-card-2); font: 600 12px var(--font); }
+
+/* ---- vue présentateur (une autre fenêtre) */
+body.dk-presenter { margin: 0; height: 100vh; display: grid; grid-template-rows: auto minmax(0, 1fr); background: var(--dk-bg); color: var(--dk-text); font-family: var(--font); }
+.dk-presenter .pv-stage, .dk-thumb-stage { font-family: var(--dk-body); }
+.dk-presenter header { display: flex; align-items: center; gap: 22px; padding: 12px 22px; border-bottom: 1px solid var(--dk-line); }
+.dk-presenter .pv-time { font: 700 28px/1 var(--font); font-variant-numeric: tabular-nums; }
+.dk-presenter .pv-clock, .dk-presenter .pv-count { color: var(--dk-muted); font: 500 14px var(--font); font-variant-numeric: tabular-nums; }
+.dk-presenter .spacer { flex: 1; }
+.dk-presenter header button { min-width: 42px; height: 34px; border: 1px solid var(--dk-line); border-radius: 6px; background: var(--dk-card); color: var(--dk-text); font: 600 16px var(--font); cursor: pointer; }
+.dk-presenter main { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 22px; padding: 22px; min-height: 0; }
+.dk-presenter aside { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.dk-presenter .pv-box { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--dk-line); border-radius: 6px; background: var(--dk-bg); }
+.dk-presenter .pv-stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; }
+.dk-presenter .pv-label { font: 600 11px var(--font); letter-spacing: .08em; text-transform: uppercase; color: var(--dk-faint); }
+.dk-presenter .pv-notes { flex: 1; overflow: auto; font-size: 21px; line-height: 1.5; }
+.dk-presenter .pv-end { margin: 0; position: absolute; inset: 0; display: grid; place-items: center; color: var(--dk-faint); }
+.dk-presenter .dk-foot { display: none; }
+
+/* ---- dans l'éditeur, en mode présentation : chaque « --- » annonce une nouvelle diapositive */
+body.deck-mode .lx-hr { position: relative; }
+body.deck-mode .lx-hr:not(.lx-active)::after { content: "diapositive suivante"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 0 0 0 10px; background: var(--bg); font: 600 10px/1 var(--font); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); pointer-events: none; }
+.st-present { color: var(--accent) !important; font-weight: 600; }
+
+/* ---- PDF : une diapositive par page, au format de l'écran */
+#print-view.deck-print { width: 1280px; font: inherit; font-family: var(--dk-body); color: var(--dk-text); background: none; }
+.dk-page-print { position: relative; width: 1280px; height: 720px; overflow: hidden; break-after: page; page-break-after: always; background: var(--dk-bg); }
+.dk-page-print:last-child { break-after: auto; page-break-after: auto; }
+.deck-print .dk-run, .deck-print .dk-out-empty, .deck-print a[href="#executer"], .deck-print a[href="#run"] { display: none; }
+/* avec les notes : une page A4 par diapositive, la diapositive en haut, les notes dessous */
+#print-view.deck-print.dk-handouts { width: 180mm; }
+.dk-handout { break-after: page; page-break-after: always; padding-top: 2mm; font-family: var(--font); color: #18181B; }
+.dk-handout:last-child { break-after: auto; page-break-after: auto; }
+.dk-handout header { display: flex; justify-content: space-between; margin-bottom: 4mm; font: 500 9pt var(--font); color: #6B6B75; }
+.dk-handout .dk-hslide { font-family: var(--dk-body); position: relative; width: 180mm; aspect-ratio: 16 / 9; overflow: hidden; border: .3mm solid #D4D4D8; }
+.dk-handout .dk-hslide .dk-page-print { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.dk-handout .dk-hnotes { margin-top: 7mm; font: 11pt/1.6 var(--font); }
+.dk-handout .dk-hnotes p { margin: 0 0 .6em; }
+.dk-handout .dk-hnotes:empty::before { content: "Pas de notes."; color: #9A9AA3; font-style: italic; }
+.dk-handout .dk-hlines { margin-top: 8mm; height: 60mm; background: repeating-linear-gradient(transparent 0 9.5mm, #E4E4E7 9.5mm 9.8mm); }
+@media print {
+  body.printing #print-view.deck-print:not(.dk-handouts) { width: 1280px; }
+  body.printing #print-view.deck-print.dk-handouts { width: auto; }
+  .deck-print, .deck-print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ---- les couleurs du code suivent la diapositive (claire ou sombre), pas l'éditeur */
+.deck:not(.dk-light), .dk-presenter:not(.dk-light), .deck-print:not(.dk-light) {
+  --k-keyword: #569CD6; --k-ctl: #C586C0; --k-string: #CE9178; --k-regex: #D16969; --k-number: #B5CEA8; --k-comment: color-mix(in srgb, var(--dk-faint) 75%, var(--dk-text));
+  --k-fn: #DCDCAA; --k-type: #4EC9B0; --k-var: #9CDCFE; --k-prop: #9CDCFE; --k-const: #4FC1FF; --k-self: #569CD6;
+  --k-meta: #DCDCAA; --k-tag: #569CD6; --k-attr: #9CDCFE; --k-text: #D4D4D4; --k-br0: #FFD700; --k-br1: #DA70D6; --k-br2: #179FFF;
+}
+.dk-light {
+  --k-keyword: #0000FF; --k-ctl: #AF00DB; --k-string: #A31515; --k-regex: #811F3F; --k-number: #098658; --k-comment: color-mix(in srgb, var(--dk-faint) 75%, var(--dk-text));
+  --k-fn: #795E26; --k-type: #267F99; --k-var: #001080; --k-prop: #001080; --k-const: #0070C1; --k-self: #0000FF;
+  --k-meta: #795E26; --k-tag: #800000; --k-attr: #E50000; --k-text: #18181B; --k-br0: #0431FA; --k-br1: #319331; --k-br2: #7B3814;
+}
+
+/* (les commentaires du code prennent le gris du style : --k-comment, d'après --dk-faint, ci-dessus et plus bas) */
+
+/* ======================================================================== les autres styles */
+
+/* Minuit : bleu nuit et or, titres à empattements */
+:is(.deck, .dk-presenter, .deck-print).th-minuit {
+  --dk-bg: #0E1628; --dk-text: #F2EEE3; --dk-muted: #B4AE9E; --dk-faint: #7D7A70;
+  --dk-card: #152038; --dk-card-2: #1C2944; --dk-line: #26344F;
+  --dk-a: #D9A93F; --dk-on-a: #0E1628;
+  --dk-head: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --dk-head-weight: 600; --dk-track: -.01em;
+}
+.th-minuit .l-couverture h1 { font-style: italic; }
+.th-minuit .l-section :is(h1, h2)::before { height: 1px; width: 80px; }
+
+/* LaTeX : à la manière de Beamer (thème Madrid, avec ombres et coins arrondis) — Computer Modern, le bleu de
+   structure et ses nuances, titres de diapositive dans une bande dégradée, puces en billes, blocs arrondis ombrés
+   (bloc, exemple, alerte), page de titre en cartouche, repères en ronds, pied de page à trois segments */
+:is(.deck, .dk-presenter, .deck-print).th-latex {
+  --dk-bg: #FFFFFF; --dk-text: #000000; --dk-muted: #333333; --dk-faint: #6B6B6B;
+  --dk-card: #F4F4FA; --dk-card-2: #EBEBF5; --dk-line: #D3D3E2;
+  --dk-a: #3333B3; --dk-on-a: #FFFFFF;
+  --bm-dark: #1F1F6B;                                     /* structure foncée */
+  --bm-mid: #3333B3;                                      /* structure */
+  --bm-light: #ADADE0;                                    /* structure claire */
+  --bm-tint: #E6E6F5;                                     /* fond des blocs */
+  --bm-tint-2: #D6D6EF;
+  --bm-ex: #1A7A1A; --bm-ex-tint: #E5F2E5;                /* exampleblock */
+  --bm-al: #C21A1A; --bm-al-tint: #F7E4E4;                /* alertblock */
+  --bm-shadow: 0 3px 6px -1px rgba(20, 20, 60, .28), 0 1px 2px rgba(20, 20, 60, .18);
+  --dk-head: "CMU Serif", "Latin Modern Roman", "Computer Modern", Georgia, serif;
+  --dk-body: "CMU Serif", "Latin Modern Roman", "Computer Modern", Georgia, serif;
+  --mono: "CMU Typewriter", "Latin Modern Mono", ui-monospace, monospace;
+  --dk-head-weight: 500; --dk-track: 0; --dk-radius: 6px;
+}
+.th-latex .dk-frame { inset: 0 72px 54px; gap: 26px; }
+.th-latex .dk-body { padding-top: 4px; }
+.th-latex :is(.l-couverture, .l-section, .l-fin, .l-annonce, .l-citation, .l-centre) .dk-frame { inset: 40px 72px 54px; }
+
+/* le titre de diapositive : une bande pleine largeur, dégradée de haut en bas, ombrée, filet foncé dessous */
+.th-latex .dk-head { margin: 0 -72px; padding: 22px 72px 16px; background: linear-gradient(180deg, var(--bm-tint) 0%, var(--bm-tint-2) 100%); border-bottom: 1.5px solid var(--bm-mid); box-shadow: 0 4px 8px -4px rgba(20, 20, 60, .35); }
+.th-latex .dk-head > * { color: var(--bm-mid); font-size: calc(40px * var(--fit)); }
+
+/* les repères (miniframes) : un rond par diapositive, en haut à droite, plein pour celle-ci */
+.th-latex .dk-mini { position: absolute; top: 12px; right: 22px; z-index: 2; display: flex; gap: 4px; max-width: 360px; flex-wrap: wrap; justify-content: flex-end; }
+.th-latex .dk-mini i { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--bm-mid); background: transparent; }
+.th-latex .dk-mini i.seen { background: var(--bm-light); border-color: var(--bm-light); }
+.th-latex .dk-mini i.on { background: var(--bm-mid); }
+.th-latex :is(.l-couverture) .dk-mini { display: none; }
+
+/* les puces : des billes en relief ; les numéros dans des billes ; les sous-puces en petits triangles */
+.th-latex .dk-chunk ul, .th-latex .dk-chunk ol { list-style: none; padding-left: 0; counter-reset: bm; }
+.th-latex .dk-chunk li { position: relative; padding-left: 1.25em; }
+.th-latex .dk-chunk ul > li::before { content: ""; position: absolute; left: .12em; top: .46em; width: .52em; height: .52em; border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #FFFFFF 0, #9C9CE3 18%, var(--bm-mid) 58%, var(--bm-dark) 100%); box-shadow: .04em .07em .12em rgba(0, 0, 0, .35); }
+.th-latex .dk-chunk ol > li { counter-increment: bm; padding-left: 1.55em; }
+.th-latex .dk-chunk ol > li::before { content: counter(bm); position: absolute; left: 0; top: .22em; width: 1.05em; height: 1.05em; border-radius: 50%; display: grid; place-items: center;
+  font: 700 .62em/1 var(--dk-body); color: #fff; background: radial-gradient(circle at 34% 30%, #B8B8EE 0, var(--bm-mid) 55%, var(--bm-dark) 100%); box-shadow: .04em .07em .12em rgba(0, 0, 0, .35); }
+.th-latex .dk-chunk ol > li::before { width: 1.7em; height: 1.7em; }
+.th-latex .dk-chunk li li::before { content: ""; top: .5em; width: 0; height: 0; border-radius: 0; background: none; box-shadow: none; border-left: .42em solid var(--bm-mid); border-top: .25em solid transparent; border-bottom: .25em solid transparent; }
+.th-latex .dk-chunk li::marker { content: none; }
+.th-latex .dk-chunk strong { font-weight: 700; }
+.th-latex .dk-chunk em { color: var(--bm-mid); font-style: italic; }
+.th-latex .dk-chunk h3 { color: var(--bm-mid); font-weight: 500; }
+.th-latex .dk-chunk table { font-size: .74em; }
+.th-latex .dk-chunk th { color: var(--dk-text); border-bottom: 1px solid #000; border-top: 1.5px solid #000; }
+.th-latex .dk-chunk tr:last-child td { border-bottom: 1.5px solid #000; }
+
+/* page de titre : le titre dans un cartouche arrondi, dégradé et ombré ; auteur, institut, date en lignes */
+.th-latex .l-couverture .dk-main { text-align: center; }
+.th-latex .l-couverture h1 { display: inline-block; margin: 0 0 .7em; padding: .45em 1.1em .5em; border-radius: 12px; background: linear-gradient(180deg, var(--bm-tint) 0%, var(--bm-tint-2) 100%); box-shadow: var(--bm-shadow); color: var(--bm-mid); font-size: calc(52px * var(--fit)); letter-spacing: 0; line-height: 1.15; }
+.th-latex .l-couverture p { margin-inline: auto; color: var(--dk-text); font-style: italic; }
+.th-latex .dk-byline { display: grid; gap: .35em; margin: 1.5em auto 0; padding: 0; border: 0; font-size: .72em; color: var(--dk-text); }
+.th-latex .dk-byline span + span::before { content: none; }
+.th-latex .dk-byline .dk-who { font-size: 1.12em; }
+.th-latex .dk-byline .dk-inst { font-size: .9em; font-style: italic; color: var(--dk-muted); }
+.th-latex .dk-byline .dk-when { font-size: .9em; color: var(--dk-muted); }
+
+/* page de section : un cartouche dégradé et ombré, comme \sectionpage ; la fin, en bleu */
+.th-latex .l-section .dk-main, .th-latex .l-fin .dk-main { text-align: center; }
+.th-latex .l-section :is(h1, h2) { display: inline-block; padding: .35em 1.1em .4em; border-radius: 12px; background: linear-gradient(180deg, #4A4AC4 0%, var(--bm-mid) 55%, #2A2A99 100%); box-shadow: var(--bm-shadow); color: #fff; font-size: calc(44px * var(--fit)); letter-spacing: 0; }
+.th-latex .l-section :is(h1, h2)::before { display: none; }
+.th-latex .l-section p { margin-top: 1em; margin-inline: auto; font-style: italic; }
+.th-latex .l-fin :is(h1, h2) { color: var(--bm-mid); font-size: calc(54px * var(--fit)); }
+.th-latex .l-annonce p { font-weight: 500; letter-spacing: 0; }
+.th-latex .l-annonce strong { color: var(--bm-mid); }
+.th-latex .l-citation blockquote { border: 0; padding: .6em 1.2em; border-radius: var(--dk-radius); background: var(--bm-tint); box-shadow: var(--bm-shadow); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.th-latex .l-citation blockquote p:last-child:not(:first-child) { font-style: normal; text-align: right; color: var(--dk-muted); }
+.th-latex .dk-chunk blockquote { border-left: 3px solid var(--bm-light); color: var(--dk-text); font-style: italic; }
+
+/* les blocs (encadrés, code, résultat, erreur) : coins arrondis, ombre, bandeau de titre dégradé */
+.th-latex .dk-chunk .callout { padding: 0; border: 0; border-radius: var(--dk-radius); overflow: hidden; background: var(--bm-tint); box-shadow: var(--bm-shadow); }
+.th-latex .dk-chunk .callout > :not(.callout-title) { margin: 0; padding: .45em .8em .55em; }
+.th-latex .dk-chunk .callout-title { margin: 0; padding: .3em .8em; background: linear-gradient(180deg, #4A4AC4, var(--bm-mid)); color: #fff; font-size: .8em; letter-spacing: 0; text-transform: none; font-weight: 500; }
+.th-latex .dk-chunk .callout-tip .callout-title { background: linear-gradient(180deg, #2E9A2E, var(--bm-ex)); }
+.th-latex .dk-chunk .callout-tip { background: var(--bm-ex-tint); }
+.th-latex .dk-chunk :is(.callout-warning, .callout-caution) .callout-title { background: linear-gradient(180deg, #DB3B3B, var(--bm-al)); }
+.th-latex .dk-chunk :is(.callout-warning, .callout-caution) { background: var(--bm-al-tint); }
+.th-latex .dk-cell-code { border: 0; border-radius: var(--dk-radius); background: var(--bm-tint); box-shadow: var(--bm-shadow); }
+.th-latex .dk-cell-bar { padding: 7px 8px 7px 14px; border: 0; background: linear-gradient(180deg, #4A4AC4, var(--bm-mid)); color: #fff; font: 500 15px/1 var(--dk-body); letter-spacing: 0; text-transform: none; }
+.th-latex .dk-cell-bar .dk-status { color: rgba(255, 255, 255, .85); }
+.th-latex .dk-run { background: #fff; color: var(--bm-mid); border-radius: 4px; font-family: var(--dk-body); font-weight: 700; }
+.th-latex .dk-code { color: var(--dk-text); }
+.th-latex .dk-out .out-stream, .th-latex .dk-out .out-text { position: relative; padding: 2.3em 16px 12px; border: 0; border-radius: var(--dk-radius); background: var(--bm-ex-tint); box-shadow: var(--bm-shadow); overflow: hidden; }
+.th-latex .dk-out .out-stream::before, .th-latex .dk-out .out-text::before { content: "Résultat"; position: absolute; left: 0; right: 0; top: 0; padding: 6px 14px; background: linear-gradient(180deg, #2E9A2E, var(--bm-ex)); color: #fff; font: 500 15px/1 var(--dk-body); }
+.th-latex .dk-out .out-stream.stderr { background: var(--bm-al-tint); color: var(--bm-al); }
+.th-latex .dk-out .out-stream.stderr::before { content: "Erreurs"; background: linear-gradient(180deg, #DB3B3B, var(--bm-al)); }
+.th-latex .dk-out .out-error { border: 0; border-radius: var(--dk-radius); background: var(--bm-al-tint); box-shadow: var(--bm-shadow); padding-top: 2.4em; position: relative; overflow: hidden; }
+.th-latex .dk-out .out-error::before { content: "Erreur"; position: absolute; left: 0; right: 0; top: 0; padding: 6px 14px; background: linear-gradient(180deg, #DB3B3B, var(--bm-al)); color: #fff; font: 500 15px/1 var(--dk-body); }
+.th-latex .dk-out-empty { border-color: var(--bm-light); border-radius: var(--dk-radius); font-family: var(--dk-body); }
+.th-latex .dk-media img { border-radius: var(--dk-radius); box-shadow: var(--bm-shadow); }
+.th-latex a.dk-btn { border: 0; border-radius: 6px; padding: .34em .95em; background: linear-gradient(180deg, #4A4AC4, var(--bm-mid)); color: #fff; font-weight: 500; box-shadow: var(--bm-shadow); }
+.th-latex a.dk-btn:hover { background: linear-gradient(180deg, #5656CF, #3D3DC0); color: #fff; }
+.th-latex .dk-glres { border-left-color: var(--bm-ex); color: var(--bm-ex); }
+.th-latex .pr-phrase { background: var(--bm-tint); }
+
+/* pied de page à trois segments, du plus foncé au plus clair : auteur, titre, date et numéro */
+.th-latex .dk-foot { left: 0; right: 0; bottom: 0; height: 26px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; padding: 0; font: 400 13px/26px var(--dk-body); color: #fff; }
+.th-latex .dk-foot > span { display: block; padding: 0 18px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: center; }
+.th-latex .dk-foot-who { display: block !important; background: var(--bm-dark); }
+.th-latex .dk-foot-title { background: var(--bm-mid); }
+.th-latex .dk-foot-n { background: var(--bm-light); color: var(--bm-dark); text-align: right !important; }
+.th-latex .dk-foot-date { display: inline !important; font-style: normal; margin-right: 2.2em; }
+.th-latex .dk-progress i { background: var(--bm-mid); }
+
+/* Terminal : noir, vert, titres en police de code */
+:is(.deck, .dk-presenter, .deck-print).th-terminal {
+  --dk-bg: #0C0D0C; --dk-text: #D8E3D8; --dk-muted: #93A393; --dk-faint: #5F6B5F;
+  --dk-card: #131513; --dk-card-2: #1A1D1A; --dk-line: #262A26;
+  --dk-a: #4ADE80; --dk-on-a: #0C0D0C;
+  --dk-head: var(--mono); --dk-head-weight: 600; --dk-track: -.02em; --dk-radius: 4px;
+}
+.th-terminal .dk-head > *::before { content: "$ "; color: var(--dk-a); }
+.th-terminal .dk-foot, .th-terminal .dk-count { font-family: var(--mono); }
+.th-terminal .dk-chunk ul > li::marker { content: "- "; font-family: var(--mono); color: var(--dk-a); }
+
+/* Pop : aplats francs, gros titres, contours noirs ; les sections en pleine couleur */
+:is(.deck, .dk-presenter, .deck-print).th-pop {
+  --dk-bg: #F4EFE6; --dk-text: #111111; --dk-muted: #3D3D3D; --dk-faint: #777777;
+  --dk-card: #FFFFFF; --dk-card-2: #FFFFFF; --dk-line: #111111;
+  --dk-a: #E8432E; --dk-on-a: #FFFFFF;
+  --dk-head-weight: 850; --dk-track: -.04em; --dk-radius: 8px;
+}
+.th-pop .dk-cell-code, .th-pop .dk-out .out-stream, .th-pop .dk-out .out-text, .th-pop .dk-media img { border: 2px solid #111; }
+.th-pop .dk-cell-bar { border-bottom: 2px solid #111; }
+.th-pop .dk-slide.l-section { --dk-slide-bg: #E8432E; color: #fff; }
+.th-pop .dk-slide.l-section p, .th-pop .dk-slide.l-section .dk-foot { color: rgba(255, 255, 255, .8); }
+.th-pop .dk-slide.l-section :is(h1, h2)::before { background: #fff; }
+.th-pop .dk-chunk li::marker { color: var(--dk-a); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dk-slide [data-step], .dk-progress i { transition: none; }
+}
+.dk-chunk .callout-name { font-weight: 400; }
+
+/* ======================================================================== la couleur du code, style par style
+   (après les palettes claire et sombre : chaque style a la sienne, accordée à ses gris et à son accent) */
+:is(.deck, .dk-presenter, .deck-print).th-minuit {
+  --k-keyword: #D9A93F; --k-ctl: #E8C26B; --k-string: #B5D3A0; --k-regex: #D9A0A0; --k-number: #F2A07B; --k-comment: #7D7A70;
+  --k-fn: #9CC3F5; --k-type: #8FD3C8; --k-var: #F2EEE3; --k-prop: #CFE0F7; --k-const: #F2A07B; --k-self: #E8C26B;
+  --k-meta: #9CC3F5; --k-tag: #D9A93F; --k-attr: #CFE0F7; --k-text: #E8E4D8; --k-br0: #D9A93F; --k-br1: #9CC3F5; --k-br2: #C9A0E8;
+}
+:is(.deck, .dk-presenter, .deck-print).th-latex {
+  --k-keyword: #3333B3; --k-ctl: #6A1B9A; --k-string: #2E7D32; --k-regex: #8E2441; --k-number: #B35900; --k-comment: #7A7A7A;
+  --k-fn: #1F1F6B; --k-type: #1F6B6B; --k-var: #000000; --k-prop: #1F1F6B; --k-const: #B35900; --k-self: #3333B3;
+  --k-meta: #6A1B9A; --k-tag: #3333B3; --k-attr: #8E2441; --k-text: #000000; --k-br0: #3333B3; --k-br1: #2E7D32; --k-br2: #6A1B9A;
+}
+.th-latex .dk-code .cm-keyword { font-weight: 700; }
+:is(.deck, .dk-presenter, .deck-print).th-terminal {
+  --k-keyword: #4ADE80; --k-ctl: #86EFAC; --k-string: #D9F99D; --k-regex: #FCA5A5; --k-number: #FCD34D; --k-comment: #5F6B5F;
+  --k-fn: #A7F3D0; --k-type: #6EE7B7; --k-var: #D8E3D8; --k-prop: #BBF7D0; --k-const: #FCD34D; --k-self: #86EFAC;
+  --k-meta: #A7F3D0; --k-tag: #4ADE80; --k-attr: #BBF7D0; --k-text: #D8E3D8; --k-br0: #4ADE80; --k-br1: #FCD34D; --k-br2: #6EE7B7;
+}
+:is(.deck, .dk-presenter, .deck-print).th-pop {
+  --k-keyword: #E8432E; --k-ctl: #2E5BFF; --k-string: #0F8A5F; --k-regex: #B0306A; --k-number: #B35C00; --k-comment: #777777;
+  --k-fn: #111111; --k-type: #2E5BFF; --k-var: #111111; --k-prop: #3D3D3D; --k-const: #B35C00; --k-self: #E8432E;
+  --k-meta: #2E5BFF; --k-tag: #E8432E; --k-attr: #0F8A5F; --k-text: #111111; --k-br0: #E8432E; --k-br1: #2E5BFF; --k-br2: #0F8A5F;
+}
+.th-pop .dk-code .cm-lx-fn { font-weight: 700; }

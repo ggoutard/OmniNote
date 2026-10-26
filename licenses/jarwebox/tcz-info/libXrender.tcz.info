@@ -1,0 +1,13 @@
+Title:          libXrender.tcz
+Description:    Xrender
+Version:        0.9.10
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		16KB
+Extension_by:   Curaga
+Tags:		Xrender
+Comments:       -
+Change-log:     2013/06/15 first version
+                2015/12/17 updated 0.9.8 -> 0.9.9 (juanito)
+Current:	2017/02/20 updated 0.9.9 -> 0.9.10 (juanito)

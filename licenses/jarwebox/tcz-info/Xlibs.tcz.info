@@ -1,0 +1,31 @@
+Title:          Xlibs.tcz
+Description:    Xlibs xlibs
+Version:
+Author:         various
+Original-site:
+Copying-policy: OpenSource
+Size:           1.2MB
+Extension_by:   roberts
+Tags:           Xlibs base Xprogs
+Comments:       This is the Xlibs and base Xprogs from tinycore
+Change-log:     ----
+                2011/02/12 from tinycore base.
+                2011/09/17 Updated libs from tinycore 4.x base.
+                2011/11/19 Removed misplaced binaries and fonts.
+                2012/01/07 Adjusted for permission issues.
+                2012/04/27 Removed scm desktop item.
+                2013/05/26 Removed freetype, imlib2, jpeg and libpng (juanito)
+                2013/06/20 X libs removed to dep file (juanito)
+	        2013/08/13 Removed xterm symlink (bmarkus)
+                2013/09/08 updated .xsession to use $HOME (roberts)
+                2013/11/07 moved font files to fontconfig (juanito)
+                2015/12/17 removed files duplicated in libX11 extension (juanito)
+                2018/03/11 refactored with Xprogs (juanito)
+                2018/03/28 removed locale files present in libX11 (juanito)
+                2018/04/04 refactored to /usr/local (juanito)
+                2018/04/17 updated xauth, xmodemap, xset (juanito)
+                2018/04/17 updated hsetroot (juanito)
+                2018/11/10 adjusted .xsession (juanito)
+                2018/12/31 reverted hsetroot to previous version (juanito)
+                2020/02/06 adjusted .xsession (juanito)
+Current:        2020/12/27 adjusted .xsession as per GNUser (juanito)

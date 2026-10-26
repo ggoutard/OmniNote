@@ -1,0 +1,17 @@
+Title:          rxvt.tcz
+Description:    Unicode and 265-color VT102 terminal emulator
+Version:        9.22
+Author:         Marc Lehmann <rxvt@schmorp.de>
+Original-site:  http://software.schmorp.de/pkg/rxvt-unicode.html
+Copying-policy: GPL v3
+Size:		368K
+Extension_by:   andyj
+Tags:           TERMINAL UNICODE 256 COLOR XFT TRUETYPE
+Comments:       Binaries only
+		Supports Unicode, true type fonts, and 256 colors
+                ----
+                Compiled for TC 8.x
+Change-log:	2017/07/01 first version
+	        2018/01/06 added patches for font rendering
+		2019/01/21 recompiled for TC 10.x
+Current:	2019/07/06 moved urxvtd from rxvt-doc.tcz

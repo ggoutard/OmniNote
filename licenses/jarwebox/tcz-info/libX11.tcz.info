@@ -1,0 +1,16 @@
+Title:          libX11.tcz
+Description:    X11
+Version:        1.6.9
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		896KB
+Extension_by:   Curaga
+Tags:		X11
+Comments:       -
+Change-log:     2013/06/15 first version
+                2015/12/17 updated 1.6.0 -> 1.6.3 (juanito)
+                2017/02/20 updated 1.6.3 -> 1.6.4 (juanito)
+                2018/03/26 updated 1.6.4 -> 1.6.5 (juanito)
+                2019/01/24 adjusted startup script (juanito)
+Current:	2019/11/10 updated 1.6.5 -> 1.6.9 (juanito)

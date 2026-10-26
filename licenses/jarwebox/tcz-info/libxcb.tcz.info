@@ -1,0 +1,17 @@
+Title:          libxcb.tcz
+Description:    xcb
+Version:        1.13.1
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		276KB
+Extension_by:   Curaga
+Tags:		xcb
+Comments:       -
+Change-log:     2013/06/15 - First version
+                2015/02/13 updated to 1.11 and added xcb-util-keysyms (juanito)
+                2015/09/10 added xcb-util-wm (juanito)
+                2015/12/17 updated libxcb, xcb-util-image, xcb-util-renderutil and xcb-util-cursor (juanito)
+                2016/07/30 updated 1.11.1 -> 1.12, updated xcb-util-cursor (juanito)
+                2018/03/26 updated 1.12 -> 1.13 (juanito)
+Current:	2019/11/10 updated 1.13 -> 1.13.1 (juanito)

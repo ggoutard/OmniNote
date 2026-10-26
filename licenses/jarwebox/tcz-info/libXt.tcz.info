@@ -1,0 +1,13 @@
+Title:          libXt.tcz
+Description:    Xt
+Version:        1.2.0
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		144KB
+Extension_by:   Curaga
+Tags:		Xt
+Comments:       -
+Change-log:     2013/06/15 first version
+                2015/12/17 updated 1.1.4 -> 1.1.5 (juanito)
+Current:	2019/11/10 updated 1.1.5 -> 1.2.0 (juanito)

@@ -1,0 +1,12 @@
+/* Surface of a JarWeBox instance: black, the app and nothing else. */
+.jw { position: relative; overflow: hidden; background: #000; }
+.jw-viewport { position: absolute; overflow: hidden; }
+.jw-screen { position: absolute; left: 0; top: 0; }
+.jw-screen canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+  touch-action: none;
+}
+.jw-viewport[hidden] { display: none; }

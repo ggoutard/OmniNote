@@ -1,0 +1,18 @@
+Title:          freetype.tcz
+Description:    freetype library
+Version:        2.8.1
+Author:         see list of sites below
+Original-site:  see list of sites below
+Copying-policy: see list of sites below
+Size: 304KB
+Extension_by:   juanito
+Tags:	        graphics font truetype
+Comments:       library which allows applications to properly render truetype fonts
+                ----------
+                This extension contains:
+                freetype-2.8.1 - free - http://downloads.sourceforge.net/freetype/freetype-2.8.1.tar.bz2
+                ----------
+                2013/05/18 first version
+                2016/10/04 updated 2.4.12 -> 2.7
+                2017/07/10 updated 2.7 -> 2.8
+Current:        2017/10/09 updated 2.8 -> 2.8.1

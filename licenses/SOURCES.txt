@@ -1,0 +1,47 @@
+SOURCES CORRESPONDANTES — TextEdit
+==================================
+
+Auteur : ggoutard — contact (licences et demandes de sources) : contact.ggoutard@gmail.com
+
+La machine de TextEdit est l'image de JarWeBox, à laquelle s'ajoutent trois extensions
+(jarwebox/image/cdrom-*, et l'image mémoire jarwebox/image/state-*.bin.zst qui les contient
+une fois montées). Pour les composants de JarWeBox, voir licenses/jarwebox/SOURCES.txt.
+
+Les composants ajoutés sont des paquets Debian 10 (buster, i386) redistribués sans
+modification, et GnuCOBOL 3.2 compilé depuis son archive officielle. Les sources des
+composants sous GPL ou LGPL, aux versions exactes des binaires (voir les fichiers PACKAGES) :
+
+lumen-tc.tcz — compilateurs C, C++ et COBOL (tools/toolchain.sh)
+* gcc-8 8.3.0-6 (gcc, g++, cpp, libstdc++) — GPL-3.0+, exception GCC 3.1
+    https://snapshot.debian.org/package/gcc-8/8.3.0-6/
+* binutils 2.31.1-16 (as, ld, libbfd, libopcodes) — GPL-3.0+
+    https://snapshot.debian.org/package/binutils/2.31.1-16/
+* glibc 2.28-10+deb10u4 (libc6-dev : en-têtes, objets de démarrage) — LGPL-2.1+
+    https://snapshot.debian.org/package/glibc/2.28-10%2Bdeb10u4/
+* gmp 2:6.1.2+dfsg-4+deb10u1 — LGPL-3.0+ / GPL-2.0+
+    https://snapshot.debian.org/package/gmp/2%3A6.1.2%2Bdfsg-4%2Bdeb10u1/
+* mpfr4 4.0.2-1 — LGPL-3.0+
+    https://snapshot.debian.org/package/mpfr4/4.0.2-1/
+* mpclib3 1.1.0-1 — LGPL-3.0+
+    https://snapshot.debian.org/package/mpclib3/1.1.0-1/
+* GnuCOBOL 3.2 (cobc : GPL-3.0+ ; libcob : LGPL-3.0+)
+    https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.2.tar.xz
+
+lumen-py.tcz — numpy, matplotlib (tools/pylibs.sh)
+* gcc-8 8.3.0-6 (libgfortran5, libquadmath0) — GPL-3.0+, exception GCC 3.1 : même source que ci-dessus
+
+lumen-lang.tcz — PHP, Rust, Go (tools/langs.sh, tools/lumen-go/)
+* gcc-8 8.3.0-6 (libatomic1) — GPL-3.0+, exception GCC 3.1 : même source que ci-dessus
+  Les autres composants (PHP, Rust, LLVM, ICU, libxml2, OpenSSL, libsodium, libedit, PCRE2,
+  yaegi, Go…) sont sous licences permissives ; leurs origines sont dans PACKAGES et
+  THIRD_PARTY.md, leurs sources sur https://snapshot.debian.org/, https://github.com/traefik/yaegi
+  et https://go.dev.
+
+Archive Debian : http://archive.debian.org/debian/pool/main/ (et debian-security pour les
+versions +debXuY). Les scripts qui recomposent ces extensions sont dans le dépôt de
+développement (tools/toolchain.sh, tools/pylibs.sh, tools/langs.sh, tools/build_image.py).
+
+Offre écrite : pendant trois ans après la dernière publication de cette image, l'auteur
+fournit sur simple demande à l'adresse ci-dessus une copie complète des sources
+correspondantes des composants GPL/LGPL listés ici, sur un support d'échange courant,
+pour un prix ne dépassant pas le coût de la copie.

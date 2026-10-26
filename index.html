@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>TextEdit</title>
+  <meta name="description" content="TextEdit : un éditeur de texte Markdown dont les blocs de code (Python, JavaScript, Java, Shell, SQL, Tcl, Scheme, AWK…) s'exécutent dans une machine Linux émulée dans le navigateur.">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111113" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2318181B'/%3E%3Crect x='13' y='8' width='6' height='16' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/codemirror/codemirror.css">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="css/lumen.css">
+  <link rel="stylesheet" href="css/deck.css">
+  <script>
+    // Le thème choisi s'applique avant le premier affichage : pas d'éclair blanc en thème sombre
+    try {
+      var t = JSON.parse(localStorage.getItem("lumen.theme")) || "auto";
+      if (!/^(auto|light|dark|hc-dark|hc-light)$/.test(t)) t = "auto";
+      var d = t === "dark" || t === "hc-dark" || (t === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.dataset.theme = d ? "dark" : "light";
+      if (/^hc-/.test(t)) document.documentElement.dataset.contrast = "high";
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <div id="splash" class="splash" aria-hidden="true">
+    <div class="splash-word"><span id="splash-text"></span><i class="splash-caret"></i></div>
+  </div>
+  <script>
+    // Écran d'ouverture : « Texte » se tape, le « e » s'efface, « Edit » s'écrit à sa place.
+    // window.splashType(vitesse) rejoue la frappe (au changement de document) et rend une promesse.
+    (function () {
+      var box = document.getElementById("splash-text"), word = box.parentNode;
+      var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var run = 0;
+      function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+      function put(ch) {
+        var s = document.createElement("span");
+        s.textContent = ch;
+        s.style.setProperty("--i", box.children.length);
+        box.appendChild(s);
+      }
+      // window.splashWord : le mot d'accueil d'un document reçu par lien, tapé à la place de « TextEdit »
+      window.splashType = function (speed) {
+        var id = ++run, k = speed || 1, hello = window.splashWord || "";
+        box.textContent = "";
+        word.style.fontSize = hello.length > 9 ? "clamp(28px, " + Math.min(9, 150 / hello.length).toFixed(2) + "vw, 104px)" : "";
+        if (still) { (hello || "TextEdit").split("").forEach(put); return Promise.resolve(); }
+        var steps = [];
+        if (hello) {
+          hello.split("").forEach(function (c) { steps.push(["type", c === " " ? "\u00a0" : c, c === " " ? 260 : 150]); });
+          steps.push(["pause", "", 900]);
+        } else {
+          "Texte".split("").forEach(function (c) { steps.push(["type", c, 170]); });
+          steps.push(["pause", "", 650]);
+          steps.push(["erase", "", 230]);
+          steps.push(["pause", "", 300]);
+          "Edit".split("").forEach(function (c) { steps.push(["type", c, 180]); });
+          steps.push(["pause", "", 450]);
+        }
+        return steps.reduce(function (p, st) {
+          return p.then(function () {
+            if (id !== run) return;
+            word.classList.toggle("typing", st[0] !== "pause");
+            if (st[0] === "type") put(st[1]);
+            if (st[0] === "erase") {
+              var last = box.lastElementChild;
+              if (last) { last.classList.add("gone"); setTimeout(function () { last.remove(); }, 160 * k); }
+            }
+            // Un léger aléa : la frappe d'une main, pas d'une horloge
+            return wait(st[2] * k * (st[0] === "type" ? 0.8 + Math.random() * 0.4 : 1));
+          });
+        }, Promise.resolve()).then(function () { word.classList.remove("typing"); });
+      };
+      var fonts = document.fonts && document.fonts.load ? document.fonts.load("700 80px Inter") : Promise.resolve();
+      // Le curseur clignote seul pendant que l'éditeur se charge ; la frappe commence quand il est prêt,
+      // pour qu'aucune lettre ne soit retardée par le chargement
+      var ready = new Promise(function (r) { addEventListener("textedit-ready", r, { once: true }); setTimeout(r, 5000); });
+      // Puis on attend que la page soit au calme (quatre battements de 50 ms à l'heure), au plus 2,5 s
+      function quiet(max) {
+        return new Promise(function (r) {
+          var end = performance.now() + max, last = performance.now(), ok = 0;
+          (function tick() {
+            var now = performance.now();
+            ok = now - last < 65 ? ok + 1 : 0;
+            last = now;
+            if (ok >= 4 || now > end) r(); else setTimeout(tick, 50);
+          })();
+        });
+      }
+      window.splashTyped = Promise.all([Promise.race([fonts, wait(1500)]), ready, wait(350)])
+        .then(function () { return quiet(2500); })
+        .then(function () { return window.splashType(1); });
+    })();
+  </script>
+
+  <main class="canvas">
+    <div class="sheet"><div id="doc" class="doc"></div></div>
+  </main>
+
+  <footer class="statusbar">
+    <span class="kernel" id="kernel" data-state="off" title="La machine virtuelle"><i class="k-dot"></i><b id="kernel-label">Machine arrêtée</b><small id="kernel-sub"></small></span>
+    <span id="st-pos"></span>
+    <span id="st-ctx"></span>
+    <span id="st-gl" hidden></span>
+    <span id="st-pages" class="st-pages" hidden></span>
+    <span class="spacer"></span>
+    <span id="st-link" class="st-received" hidden><span id="st-link-label">reçu par lien</span> · <button type="button" id="st-keep" class="st-link" title="Garder ce document dans ce navigateur, à la place du sien">Garder une copie</button> · <button type="button" id="st-mine" class="st-link" title="Revenir au document enregistré dans ce navigateur">Mon document</button></span>
+    <span id="save-state"></span>
+    <button type="button" id="st-term" class="st-link" title="Terminal : les pages en fichiers et dossiers (Ctrl `)">&gt;_</button>
+    <button type="button" id="st-present" class="st-link st-present" title="Présenter depuis cette diapositive (F5 : depuis le début)" hidden>▶ Présenter</button>
+    <button type="button" id="st-run" class="st-link" title="Exécuter le bloc (Maj Entrée)" hidden>▶ Exécuter</button>
+    <button type="button" id="st-lang" class="st-link" title="Langage du bloc"></button>
+  </footer>
+
+  <div class="vm-host" aria-hidden="true"><div id="vm-screen" class="vm-screen"></div></div>
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <input type="file" id="open-file" accept=".ted,.ipynb,.md,.markdown,application/json,text/markdown" hidden>
+  <input type="file" id="upload-file" multiple hidden>
+
+  <dialog id="shortcuts" class="shortcuts" aria-label="Raccourcis clavier">
+    <h2>Raccourcis clavier</h2>
+    <div id="shortcuts-list" class="sc-list"></div>
+    <p class="about-small"><a href="#" id="sc-about">À propos de TextEdit</a> : confidentialité, réseau, liens reçus.</p>
+    <form method="dialog"><button>Fermer</button></form>
+  </dialog>
+
+  <dialog id="run-warn" class="shortcuts run-warn" aria-label="Exécuter ce code ?">
+    <h2>Exécuter ce code ?</h2>
+    <p><b>Ce HTML contient du JavaScript.</b> Ne l'exécutez que si vous comprenez ce que fait ce code, ou si vous avez toute confiance en son auteur : un script peut afficher un faux formulaire, imiter un autre site ou vous inciter à saisir des informations. Dans le doute, ne l'exécutez pas — le document reste lisible sans.</p>
+    <p id="rw-from" class="rw-from" hidden>Il vient d'un lien reçu : même exécuté, il n'aura aucun accès au réseau.</p>
+    <pre id="rw-code" class="rw-code"></pre>
+    <div class="rw-acts"><button type="button" id="rw-cancel">Ne pas exécuter</button><button type="button" id="rw-run" class="rw-run">J'ai compris, exécuter</button></div>
+  </dialog>
+
+  <dialog id="home" class="home" aria-label="Accueil de TextEdit">
+   <div class="hm-inner">
+    <header class="hm-head"><div class="hm-logo" aria-hidden="true"><i></i></div><div><h2>TextEdit</h2><p>Écrire, calculer, exécuter — dans votre navigateur, même hors ligne.</p></div></header>
+    <section class="hm-received" id="hm-received" hidden aria-live="polite">
+      <div class="hm-r-kicker">Lien reçu</div>
+      <h3 id="hm-r-title"></h3>
+      <p id="hm-r-hello" class="hm-r-hello" hidden></p>
+      <p class="hm-r-what">Ce lien contient un document complet, écrit par la personne qui vous l'a envoyé. Voici ce qu'il y a dedans :</p>
+      <ul id="hm-r-facts" class="hm-r-facts"></ul>
+      <div id="hm-r-warn" class="hm-r-warn" hidden></div>
+      <p class="hm-note">Rien ne s'exécute tout seul : le HTML s'affiche sans ses scripts, et c'est vous qui lancez chaque bloc. Le document s'ouvre à côté du vôtre, sans le remplacer. TextEdit ne vous demandera jamais de mot de passe ni d'information de paiement.</p>
+      <div class="hm-acts"><button type="button" id="hm-r-open" class="primary">Ouvrir le document</button><button type="button" id="hm-r-mine">Ne pas l'ouvrir : revenir à mon document</button></div>
+    </section>
+    <div class="hm-grid">
+      <section class="hm-card hm-main">
+        <h3>Écrire</h3>
+        <div class="hm-acts"><button type="button" id="hm-continue" class="primary">Continuer mon document</button><button type="button" id="hm-new">Nouveau document</button></div>
+        <div class="hm-acts hm-ex"><button type="button" data-ex="welcome">Découvrir TextEdit</button><button type="button" data-ex="iris">Deep learning (projet Iris)</button><button type="button" data-ex="presentation">Diaporama</button><button type="button" data-ex="article">Article scientifique</button></div>
+      </section>
+      <section class="hm-card">
+        <h3>Ouvrir</h3>
+        <form id="hm-link-form" class="hm-link"><input id="hm-link" type="url" inputmode="url" placeholder="Coller un lien TextEdit…" autocomplete="off" spellcheck="false" aria-label="Lien TextEdit"><button type="submit">Ouvrir</button></form>
+        <div class="hm-acts"><button type="button" id="hm-file">Ouvrir un fichier .ted, .md ou .ipynb</button></div>
+        <p class="hm-note">Un fichier <b>.ted</b> contient tout l'espace de travail : pages, dossiers et résultats. <span id="hm-ted-note"></span></p>
+      </section>
+      <section class="hm-card" id="hm-offline">
+        <h3>Hors ligne <span id="hm-off-badge" class="hm-badge"></span></h3>
+        <p class="hm-note" id="hm-off-text">Gardez TextEdit et sa machine dans ce navigateur pour travailler sans réseau (train, avion).</p>
+        <div class="hm-bar" id="hm-off-bar" hidden><i></i></div>
+        <div class="hm-acts"><button type="button" id="hm-off-dl">Tout télécharger</button><button type="button" id="hm-install" hidden>Installer l'application</button></div>
+        <p class="hm-note" id="hm-install-ios" hidden>Sur iPhone et iPad : <b>Partager</b> → <b>Sur l'écran d'accueil</b>.</p>
+      </section>
+      <section class="hm-card" id="hm-native">
+        <h3>Plus de puissance <span id="hm-nat-badge" class="hm-badge"></span></h3>
+        <p class="hm-note" id="hm-nat-text">La même machine, sans émulation : tous les langages et compilateurs dans un conteneur Docker, sur votre ordinateur. Rien ne sort de chez vous.</p>
+        <pre class="hm-cmd" id="hm-nat-cmd">docker run --rm -p 127.0.0.1:8780:8780 ghcr.io/ggoutard/textedit</pre>
+        <div class="hm-acts"><button type="button" id="hm-nat-copy">Copier la commande</button><a id="hm-nat-open" class="hm-btn" href="http://localhost:8780/" target="_blank" rel="noopener">Ouvrir http://localhost:8780</a></div>
+      </section>
+    </div>
+    <footer class="hm-foot"><label><input type="checkbox" id="hm-skip"> Ne plus afficher au démarrage <span class="hm-faint">(« /accueil » le rouvre)</span></label><button type="button" id="hm-close">Fermer</button></footer>
+   </div>
+  </dialog>
+
+  <dialog id="about" class="shortcuts about" aria-label="À propos de TextEdit">
+    <h2>À propos de TextEdit</h2>
+    <p>Un éditeur de texte où les blocs de code s'exécutent, dans une machine Linux émulée par votre navigateur.</p>
+    <p><b>TextEdit est un outil s'exécutant intégralement dans votre navigateur. Aucune donnée ni aucun document n'est transmis, stocké ou consulté par un serveur. La personne qui génère et partage un lien est seule responsable de son contenu.</b></p>
+    <ul class="about-list">
+      <li>Vos documents restent dans ce navigateur ; un lien contient le document lui-même, rien n'est déposé ailleurs.</li>
+      <li>La machine virtuelle n'a pas de carte réseau : les programmes qu'elle exécute n'atteignent rien en dehors de la page.</li>
+      <li>Un document reçu par lien n'exécute pas son HTML ni ses exécutions automatiques sans votre accord.</li>
+      <li>TextEdit ne vous demandera jamais de mot de passe ni d'information de paiement.</li>
+    </ul>
+    <p class="about-small">Logiciels tiers et licences : <a href="THIRD_PARTY.md" target="_blank" rel="noopener">THIRD_PARTY.md</a></p>
+    <form method="dialog"><button>Fermer</button></form>
+  </dialog>
+
+  <dialog id="share" class="shortcuts share" aria-label="Partager par lien">
+    <h2>Partager par lien</h2>
+    <p class="sh-lead">Tout le document tient dans l'adresse : le texte, le code et ses résultats. Rien n'est enregistré sur un serveur ; qui a le lien a le document. Vous êtes seul responsable du contenu que vous partagez.</p>
+    <label class="sh-field"><span>Mot d'accueil</span><input id="sh-hello" maxlength="40" placeholder="TextEdit" autocomplete="off"><small>tapé à l'ouverture, à la place de « TextEdit » : « Bonjour Airbus », un prénom…</small></label>
+    <label class="sh-check"><input type="checkbox" id="sh-ro"><span>Ouvrir en lecture seule</span><small>sinon le destinataire modifie le texte et le code à son tour ; les phrases et les blocs s'exécutent dans les deux cas</small></label>
+    <label class="sh-check"><input type="checkbox" id="sh-out" checked><span>Joindre les résultats des blocs</span><small>affichés tout de suite, sans attendre la machine</small></label>
+    <label class="sh-check"><input type="checkbox" id="sh-img"><span>Avec les images et les fenêtres</span><small>graphiques, captures : le lien s'allonge</small></label>
+    <input id="sh-url" class="sh-url" readonly aria-label="Le lien">
+    <p id="sh-size" class="sh-size"></p>
+    <form method="dialog" class="sh-actions">
+      <button type="button" id="sh-open">Aperçu</button>
+      <button type="button" id="sh-copy" class="primary">Copier le lien</button>
+      <button>Fermer</button>
+    </form>
+  </dialog>
+
+  <dialog id="versions" class="shortcuts share versions" aria-label="Versions du document">
+    <h2>Versions du document</h2>
+    <p class="sh-lead">Une version est gardée à chaque pause d'écriture qui change le texte (au plus une par minute, sauf un gros changement), dans ce navigateur seulement. Chacune se rouvre, se restaure, ou devient un lien à envoyer.</p>
+    <div id="vs-list" class="vs-list"></div>
+    <form method="dialog" class="sh-actions"><button>Fermer</button></form>
+  </dialog>
+
+  <script src="vendor/codemirror/codemirror.bundle.js"></script>
+  <script src="vendor/marked/marked.umd.js"></script>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="vendor/buble/buble.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

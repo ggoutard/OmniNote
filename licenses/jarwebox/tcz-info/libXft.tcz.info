@@ -1,0 +1,13 @@
+Title:          libXft.tcz
+Description:    Xft
+Version:        2.3.3
+Author:         Various
+Original-site:  http://www.x.org/
+Copying-policy: X11
+Size:		32KB
+Extension_by:   Curaga
+Tags:		Xft
+Comments:       -
+Change-log:     2013/06/15 first version
+                2015/12/17 updated 2.3.1 -> 2.3.2 (juanito)
+Current:	2019/11/10 updated 2.3.2 -> 2.3.3 (juanito)

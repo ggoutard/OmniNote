@@ -1,0 +1,329 @@
+﻿AVIS DE LICENCES DES COMPOSANTS REDISTRIBUÉS
+============================================
+
+Ce logiciel s'exécute dans une machine virtuelle x86 émulée dans le navigateur.
+L'image disque (jarwebox/image/cdrom-*) et l'image mémoire (jarwebox/image/state-*.bin.zst)
+contiennent les composants ci-dessous, chacun sous sa propre licence. Aucun de ces
+composants n'a été modifié par nous ; l'image Tiny Core a seulement été recomposée
+(choix des extensions, paramètres de démarrage, scripts : dossier tools/ du dépôt).
+Les sources correspondantes : voir SOURCES.txt.
+
+L'extension native.tcz (environnement des programmes natifs : C++/Qt, COBOL, Python/tkinter)
+contient des bibliothèques et fichiers tels que Debian 10 i386 les distribue, sans
+modification, la libcob de GnuCOBOL 3.2 compilée depuis ses sources officielles, et une
+bibliothèque libGL vide écrite par nous (MIT). Les programmes sont liés dynamiquement à ces
+bibliothèques (LGPL : Qt, libcob…), et chacun peut les remplacer par une version modifiée
+en reconstruisant l'image (tools/build_image.py du dépôt). Paquets (version) :
+    libbsd0 0.9.1-2+deb10u1
+    libbz2-1.0 1.0.6-9.2~deb10u2
+    libc6 2.28-10+deb10u4
+    libdbus-1-3 1.12.28-0+deb10u1
+    libdouble-conversion1 3.1.0-3
+    libexpat1 2.2.6-2+deb10u7
+    libffi6 3.2.1-9
+    libfontconfig1 2.13.1-2
+    libfreetype6 2.9.1-3+deb10u3
+    libgcrypt20 1.8.4-5+deb10u1
+    libglib2.0-0 2.58.3-2+deb10u6
+    libgmp10 2:6.1.2+dfsg-4+deb10u1
+    libgpg-error0 1.35-1
+    libgraphite2-3 1.3.13-7
+    libharfbuzz0b 2.3.1-1
+    libice6 2:1.0.9-2
+    libicu63 63.1-6+deb10u3
+    libjpeg62-turbo 1:1.5.2-2+deb10u1
+    liblz4-1 1.8.3-1+deb10u1
+    liblzma5 5.2.4-1+deb10u1
+    libmpdec2 2.4.2-2
+    libncursesw6 6.1+20181013-2+deb10u5
+    libpcre2-16-0 10.32-5+deb10u1
+    libpcre3 2:8.39-12
+    libpng16-16 1.6.36-6
+    libpython3.7-minimal 3.7.3-2+deb10u7
+    libpython3.7-stdlib 3.7.3-2+deb10u7
+    libqt5core5a 5.11.3+dfsg1-1+deb10u5
+    libqt5dbus5 5.11.3+dfsg1-1+deb10u5
+    libqt5gui5 5.11.3+dfsg1-1+deb10u5
+    libqt5widgets5 5.11.3+dfsg1-1+deb10u5
+    libsm6 2:1.2.3-1
+    libsqlite3-0 3.27.2-3+deb10u2
+    libsystemd0 241-7~deb10u10
+    libtcl8.6 8.6.9+dfsg-2
+    libtinfo6 6.1+20181013-2+deb10u5
+    libtk8.6 8.6.9-2
+    libuuid1 2.33.1-0.1+deb10u1
+    libx11-6 2:1.6.7-1+deb10u4
+    libx11-data 2:1.6.7-1+deb10u4
+    libx11-xcb1 2:1.6.7-1+deb10u4
+    libxau6 1:1.0.8-1+b2
+    libxcb-icccm4 0.4.1-1.1
+    libxcb-image0 0.4.0-1+b2
+    libxcb-keysyms1 0.4.0-1+b2
+    libxcb-randr0 1.13.1-2
+    libxcb-render-util0 0.3.9-1+b1
+    libxcb-render0 1.13.1-2
+    libxcb-shape0 1.13.1-2
+    libxcb-shm0 1.13.1-2
+    libxcb-sync1 1.13.1-2
+    libxcb-util0 0.3.8-3+b2
+    libxcb-xfixes0 1.13.1-2
+    libxcb-xinerama0 1.13.1-2
+    libxcb-xkb1 1.13.1-2
+    libxcb1 1.13.1-2
+    libxdmcp6 1:1.1.2-3
+    libxext6 2:1.3.3-1+b2
+    libxft2 2.3.2-2
+    libxi6 2:1.7.9-1
+    libxkbcommon-x11-0 0.8.2-1
+    libxkbcommon0 0.8.2-1
+    libxrender1 1:0.9.10-1
+    libxss1 1:1.2.3-1
+    ncurses-base 6.1+20181013-2+deb10u5
+    python3-tk 3.7.3-1
+    python3.7-minimal 3.7.3-2+deb10u7
+    tk8.6-blt2.5 2.5.3+dfsg-4
+    zlib1g 1:1.2.11.dfsg-1+deb10u2
+    gnucobol-libcob 3.2
+
+* JarWeBox (moteur web, lecteur, lanceur Java, xwin, libGL vide, scripts, applications d'exemple)
+    version : -
+    licence : MIT
+    texte   : LICENSE (à la racine du projet)
+    origine : ggoutard — contact.ggoutard@gmail.com
+
+* Noyau Linux
+    version : 5.4.3-tinycore
+    licence : GPL-2.0
+    texte   : texts/GPL-2.0.txt
+    origine : https://kernel.org (patché par Tiny Core)
+
+* BusyBox
+    version : 1.31.1
+    licence : GPL-2.0
+    texte   : texts/GPL-2.0.txt
+    origine : https://busybox.net
+
+* GNU C Library (glibc)
+    version : 2.30
+    licence : LGPL-2.1
+    texte   : texts/LGPL-2.1.txt
+    origine : https://www.gnu.org/software/libc/
+
+* libstdc++ et libgcc_s (bibliothèques d'exécution C++ de GCC, système de base)
+    version : 9.x (libstdc++.so.6.0.27)
+    licence : GPL-3.0 avec GCC Runtime Library Exception 3.1 (aucune contrainte sur les programmes compilés)
+    texte   : texts/GPL-3.0.txt, texts/GCC-exception-3.1.txt
+    origine : https://gcc.gnu.org
+
+* Système de base Tiny Core Linux 11 (core.gz : util-linux, e2fsprogs, coreutils, scripts Tiny Core…)
+    version : 11.0
+    licence : GPL-2.0 et licences des composants
+    texte   : texts/GPL-2.0.txt
+    origine : http://tinycorelinux.net
+
+* Xvesa (TinyX)
+    version : 1.3
+    licence : GPL
+    texte   : texts/GPL-2.0.txt
+    origine : https://github.com/tinycorelinux/tinyx
+
+* freetype (extension Tiny Core)
+    version : 2.8.1
+    licence : FTL ou GPL-2.0 (au choix ; FTL retenue)
+    texte   : texts/FTL-FreeType.txt
+    origine : https://freetype.org
+
+* libpng (extension Tiny Core)
+    version : 1.6.37
+    licence : libpng License
+    texte   : texts/libpng.txt
+    origine : http://www.libpng.org/pub/png/libpng.html
+
+* libfontenc (extension Tiny Core)
+    version : 1.1.4
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libXau (extension Tiny Core)
+    version : 1.0.9
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libXdmcp (extension Tiny Core)
+    version : 1.1.3
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libxcb (extension Tiny Core)
+    version : 1.13.1
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libX11 (extension Tiny Core)
+    version : 1.6.9
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libXext (extension Tiny Core)
+    version : 1.3.4
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libXfont (extension Tiny Core)
+    version : 1.5.2
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libICE (extension Tiny Core)
+    version : 1.0.10
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libSM (extension Tiny Core)
+    version : 1.2.3
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libXt (extension Tiny Core)
+    version : 1.2.0
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libXmu (extension Tiny Core)
+    version : 1.1.3
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* Xlibs (extension Tiny Core)
+    version : ?
+    licence : X11 / MIT (outils et polices X.Org) ; scripts Tiny Core sous GPL-2.0
+    texte   : texts/X11-libX11.txt, texts/GPL-2.0.txt
+    origine : http://tinycorelinux.net
+
+* expat2 (extension Tiny Core)
+    version : 2.2.9
+    licence : MIT
+    texte   : texts/MIT-expat.txt
+    origine : https://libexpat.github.io
+
+* fontconfig (extension Tiny Core)
+    version : 2.13.1
+    licence : MIT (licence de type X11 ; la fiche Tiny Core indique « GPL »)
+    texte   : texts/MIT-fontconfig.txt
+    origine : https://www.fontconfig.org
+
+* libXrender (extension Tiny Core)
+    version : 0.9.10
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* libXft (extension Tiny Core)
+    version : 2.3.3
+    licence : X11
+    texte   : texts/X11-libX11.txt
+    origine : http://www.x.org/
+
+* rxvt (extension Tiny Core)
+    version : 9.22
+    licence : GPL-3.0
+    texte   : texts/GPL-3.0.txt
+    origine : http://software.schmorp.de/pkg/rxvt-unicode.html
+
+* glibc_apps (extension Tiny Core)
+    version : 2.30
+    licence : LGPL-2.1 ; outils (localedef) sous GPL-2.0
+    texte   : texts/LGPL-2.1.txt, texts/GPL-2.0.txt
+    origine : https://www.gnu.org/software/libc/
+
+* glibc_i18n_locale (extension Tiny Core)
+    version : 2.30
+    licence : LGPL-2.1 et mentions des fichiers de locales
+    texte   : texts/LGPL-2.1.txt
+    origine : https://www.gnu.org/software/libc/
+
+* BellSoft Liberica JRE 8u402+7, build d'OpenJDK (JRE, VM client)
+    version : 1.8.0_402
+    licence : GPL-2.0 avec Classpath Exception
+    texte   : openjdk/LICENSE, openjdk/ASSEMBLY_EXCEPTION
+    origine : https://download.bell-sw.com/java/8u402+7/bellsoft-jre8u402+7-linux-i586.tar.gz (SHA-1 3b3cef6248e5a01160c408ec117cd488a24e4f6d), fichiers inchangés, plus des polices DejaVu ; composants tiers : openjdk/THIRD_PARTY_README
+
+* libXi, libXrender, libXtst (fournies avec la JRE)
+    version : ?
+    licence : X11 / MIT
+    texte   : texts/X11-libX11.txt
+    origine : https://www.x.org
+
+* Polices DejaVu
+    version : 2.37
+    licence : Licence Bitstream Vera / DejaVu (libre)
+    texte   : texts/DejaVu-Bitstream-Vera.txt
+    origine : https://dejavu-fonts.github.io
+
+* SeaBIOS (BIOS et BIOS VGA de la machine virtuelle)
+    version : rel-1.16.2-0-gea1b7a0
+    licence : LGPL-3.0
+    texte   : texts/LGPL-3.0.txt, texts/GPL-3.0.txt
+    origine : https://www.seabios.org
+
+* v86 (émulateur x86 en WebAssembly)
+    version : 0.5.463 (commit b1515fa)
+    licence : BSD-2-Clause
+    texte   : texts/BSD-2-Clause-v86.txt
+    origine : https://github.com/copy/v86/tree/b1515fa
+
+* Qt 5 (Core, Gui, Widgets, DBus, XcbQpa et plugins) — applications C++ natives
+    version : 5.11.3+dfsg1-1+deb10u5
+    licence : LGPL-3.0
+    texte   : texts/LGPL-3.0.txt, texts/GPL-3.0.txt, debian/libqt5core5a
+    origine : https://www.qt.io
+
+* GnuCOBOL — libcob (bibliothèque d'exécution des programmes COBOL)
+    version : 3.2
+    licence : LGPL-3.0-or-later
+    texte   : texts/LGPL-3.0.txt, texts/GPL-3.0.txt, debian/gnucobol-libcob
+    origine : https://gnucobol.sourceforge.io
+
+* Python 3.7 (interpréteur et bibliothèque standard de Debian, allégés : modules C retirés : _ssl, _hashlib (OpenSSL), readline, _gdbm, _dbm, _crypt, nis, ossaudiodev, modules de test (_testcapi, _testbuffer, _testmultiphase, _testimportmultiple, _ctypes_test, _xxtestfuzz, xxlimited) ; dossiers retirés : test, tests, idlelib, lib2to3, ensurepip, turtledemo, pydoc_data, distutils, config-3.7m-i386-linux-gnu ; sitecustomize.py de Debian retiré ; sources complètes non modifiées : paquet source python3.7)
+    version : 3.7.3-2+deb10u7
+    licence : PSF-2.0
+    texte   : debian/python3.7-minimal
+    origine : https://www.python.org
+
+* Tcl/Tk et tkinter (interfaces graphiques Python)
+    version : 8.6.9-2
+    licence : Licence Tcl/Tk (de type BSD)
+    texte   : debian/libtk8.6, debian/libtcl8.6
+    origine : https://www.tcl.tk
+
+* Autres bibliothèques de l'environnement natif (70 paquets au total, liste en tête de ce fichier : OpenSSL, SQLite, ICU, GMP, ncurses, X11/xcb…)
+    version : voir la liste
+    licence : licence de chaque paquet dans debian/<paquet> (MIT, BSD, LGPL, OpenSSL…)
+    texte   : debian/
+    origine : https://www.debian.org
+
+Notre code (lanceur Java, xwin, scripts, moteur web, player) est sous licence MIT. Il
+n'utilise que les API publiques d'OpenJDK et ne le modifie pas ; il relève de l'exception
+Classpath d'OpenJDK.
+
+MARQUES
+-------
+Java et OpenJDK sont des marques d'Oracle et/ou de ses filiales.
+Liberica est une marque de BellSoft.
+Qt est une marque de The Qt Company Ltd.
+Python est une marque de la Python Software Foundation.
+Linux est une marque déposée de Linus Torvalds.
+Debian est une marque de Software in the Public Interest, Inc.
+GNU est une marque de la Free Software Foundation.
+JarWeBox est un projet indépendant : il n'est ni affilié à ces titulaires, ni approuvé, parrainé ou soutenu par eux. Ces noms ne sont cités que pour désigner les logiciels utilisés.
